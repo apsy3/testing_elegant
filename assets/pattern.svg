@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120">
+  <defs>
+    <pattern id="stitched" width="12" height="12" patternUnits="userSpaceOnUse">
+      <path d="M0,6 L12,6" stroke="#C7A86A" stroke-width="1" stroke-linecap="round" stroke-dasharray="3 3"/>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#stitched)" opacity="0.25"/>
+</svg>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Elegance Threads — Premium Leather Goods</title>
+  <meta name="description" content="Elegance Threads: premium leather bags with modern minimal design and Indian craftsmanship.">
+  <link rel="icon" href="/assets/logo.svg" type="image/svg+xml">
+  <link rel="preload" href="/assets/logo.svg" as="image">
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="#home" aria-label="Elegance Threads logo">
+        <img src="/assets/logo.svg" width="110" height="30" alt="Elegance Threads logo" />
+        <span class="sr-only">Elegance Threads</span>
+      </a>
+      <nav class="primary-nav">
+        <a href="#shop">Shop</a>
+        <a href="#craft">Craft</a>
+        <a href="#about">About</a>
+        <a href="#contact" class="cta">Notify Me</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="home">
+    <section class="hero">
+      <div class="bg-pattern" aria-hidden="true"></div>
+      <div class="container hero-inner">
+        <h1>Elegance Threads</h1>
+        <p class="lead">Premium leather, modern lines. <span class="accent">Craft that carries.</span></p>
+        <div class="hero-cta">
+          <a href="#shop" class="btn btn-solid">Explore Products</a>
+          <a href="#craft" class="btn btn-ghost">Our Craft</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="shop" class="section products">
+      <div class="container">
+        <header class="section-head">
+          <h2>Featured Products</h2>
+          <p>Temporary selection to showcase the look & feel.</p>
+        </header>
+        <div class="grid" id="productGrid"></div>
+      </div>
+    </section>
+
+    <section id="craft" class="section craft">
+      <div class="container split">
+        <div class="copy">
+          <h2>Designed with Intention</h2>
+          <p>From stitch density to hardware selection, our aim is maximal elegance without noise. We work with trusted manufacturers and keep a strict QC to ensure consistency.</p>
+          <ul class="highlights">
+            <li>Full-grain & premium finishes</li>
+            <li>Solid hardware in a soft gold tone</li>
+            <li>Edge paint & reinforced stress points</li>
+          </ul>
+        </div>
+        <div class="visual">
+          <img src="/assets/products/vintage-messenger.svg" alt="Leather bag silhouette" loading="lazy"/>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="section about">
+      <div class="container split">
+        <div class="visual">
+          <img src="/assets/products/classic-tote.svg" alt="Classic chic tote graphic" loading="lazy"/>
+        </div>
+        <div class="copy">
+          <h2>Premium yet Personal</h2>
+          <p>Elegance Threads is a calm balance of craft and modern minimalism. The palette blends leather browns, charcoal grey and subtle gold accents to feel premium and relatable.</p>
+          <p class="note">This is a temporary preview site hosted on Vercel to share the vision with collaborators.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section contact">
+      <div class="container">
+        <h2>Stay in the Loop</h2>
+        <p>Share your email to get launch updates and early invites.</p>
+        <form class="capture" action="#" method="post" onsubmit="return window.fakeSubmit(event)">
+          <input type="email" required placeholder="you@example.com" aria-label="Email address"/>
+          <button class="btn btn-solid" type="submit">Notify Me</button>
+        </form>
+        <p class="disclaimer">No spam—just thoughtful updates.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="left">
+        <img src="/assets/logo.svg" width="120" height="34" alt="" aria-hidden="true"/>
+        <p>© <span id="year"></span> Elegance Threads. All rights reserved.</p>
+      </div>
+      <div class="right">
+        <a href="#home">Top</a>
+        <a href="#shop">Shop</a>
+        <a href="#craft">Craft</a>
+        <a href="#about">About</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    window.PRODUCTS = [{"id": "vintage-messenger", "name": "Vintage Messenger", "price": "₹3,999", "accent": "#7B4B33"}, {"id": "classic-tote", "name": "Classic Chic Tote", "price": "₹4,499", "accent": "#6B3F2A"}, {"id": "suede-shoulder", "name": "Suede Pride Shoulder", "price": "₹4,299", "accent": "#8C5A3D"}, {"id": "livingston-backpack", "name": "Livingston Backpack", "price": "₹4,799", "accent": "#734832"}, {"id": "wallet-set", "name": "Wallet & Purse Set", "price": "₹1,999", "accent": "#9A6B4C"}, {"id": "business-messenger", "name": "Business Messenger", "price": "₹4,299", "accent": "#704531"}];
+  </script>
+  <script src="/script.js"></script>
+</body>
+</html>

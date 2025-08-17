@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="220" height="60" viewBox="0 0 220 60" aria-labelledby="title desc" role="img">
+  <title id="title">Elegance Threads logo</title>
+  <desc id="desc">Wordmark with thread icon</desc>
+  <defs>
+    <linearGradient id="goldGrad" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#C7A86A"/>
+      <stop offset="100%" stop-color="#b08a4a"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(10,10)">
+    <path d="M0 20 C50 -10, 80 50, 120 20" fill="none" stroke="url(#goldGrad)" stroke-width="3" stroke-linecap="round"/>
+    <rect x="116" y="17" width="9" height="3" rx="1.5" fill="url(#goldGrad)"/>
+  </g>
+  <text x="10" y="50" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter" font-weight="700" font-size="22" fill="#F5EFE9">Elegance</text>
+  <text x="108" y="50" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter" font-weight="400" font-size="22" fill="url(#goldGrad)">Threads</text>
+</svg>

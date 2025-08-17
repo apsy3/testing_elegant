@@ -3,7 +3,6 @@ import { useMemo, useState } from "react";
 import catalog from "../data";
 import ProductCard from "../components/ProductCard";
 
-export const metadata = { title: "Shop — Elegance Threads" };
 
 export default function Products(){
   const [q, setQ] = useState('');

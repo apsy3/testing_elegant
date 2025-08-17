@@ -1,0 +1,9 @@
+@tailwind base; @tailwind components; @tailwind utilities;
+html,body{background:#0F0F0F;color:#F5EFE9}
+.container{width:min(1200px,92vw);margin:0 auto}
+.btn{ @apply inline-flex items-center justify-center rounded-xl px-4 py-2 font-semibold transition}
+.btn-solid{ @apply bg-gold text-ink hover:bg-[#b89250]}
+.btn-ghost{ @apply bg-white/10 hover:bg-white/15 border border-white/15}
+.card{ @apply rounded-xl border border-gold/20 bg-[#121212] shadow-card overflow-hidden}
+.badge{ @apply text-xs px-3 py-1 rounded-full border border-gold/30 bg-gold/10 text-bone}
+.h1{@apply text-5xl font-extrabold}.h2{@apply text-3xl font-bold}.h3{@apply text-xl font-semibold}

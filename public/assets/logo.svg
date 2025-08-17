@@ -1,0 +1,6 @@
+<svg xmlns='http://www.w3.org/2000/svg' width='220' height='60' viewBox='0 0 220 60'>
+  <defs><linearGradient id='g' x1='0' x2='1' y1='0' y2='1'><stop offset='0%' stop-color='#C7A86A'/><stop offset='100%' stop-color='#b08a4a'/></linearGradient></defs>
+  <g transform='translate(6,8)'><path d='M0 18 C45 -8, 75 46, 118 18' fill='none' stroke='url(#g)' stroke-width='3' stroke-linecap='round'/><rect x='114' y='15' width='9' height='3' rx='1.5' fill='url(#g)'/></g>
+  <text x='10' y='50' font-family='Inter, ui-sans-serif, system-ui' font-weight='800' font-size='22' fill='#F5EFE9'>Elegance</text>
+  <text x='108' y='50' font-family='Inter, ui-sans-serif, system-ui' font-weight='500' font-size='22' fill='url(#g)'>Threads</text>
+</svg>

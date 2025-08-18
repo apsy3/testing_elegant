@@ -1,1 +1,0 @@
-import catalog from '../data/products.json'; export default catalog;

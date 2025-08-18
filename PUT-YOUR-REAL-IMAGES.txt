@@ -1,2 +1,0 @@
-Replace the 8 placeholder PNGs in /public/assets/products/real/ with your real photos, same filenames:
-pouch-teal.png, clutch-blush.png, wallet-chocolate.png, oxford-black.png, oxford-brown.png, shoulder-taupe.png, duffle-brown.png, tote-cognac.png

@@ -1,0 +1,66 @@
+[
+  {
+    "slug": "pouch-teal",
+    "name": "City Pouch \u2014 Teal",
+    "price": 1999,
+    "category": "Small Goods",
+    "image": "/assets/products/real/pouch-teal.png",
+    "short": "Pebbled leather pouch with wrist strap and hidden pocket."
+  },
+  {
+    "slug": "clutch-blush",
+    "name": "Envelope Clutch \u2014 Blush",
+    "price": 2499,
+    "category": "Small Goods",
+    "image": "/assets/products/real/clutch-blush.png",
+    "short": "Sleek envelope with magnetic closure and soft-gold hardware."
+  },
+  {
+    "slug": "wallet-chocolate",
+    "name": "Bifold Wallet \u2014 Chocolate",
+    "price": 1799,
+    "category": "Small Goods",
+    "image": "/assets/products/real/wallet-chocolate.png",
+    "short": "Slim wallet with rounded corners, edge-painted finish."
+  },
+  {
+    "slug": "oxford-black",
+    "name": "Oxford Shoes \u2014 Black",
+    "price": 5999,
+    "category": "Footwear",
+    "image": "/assets/products/real/oxford-black.png",
+    "short": "Minimal whole-cut silhouette with leather lining."
+  },
+  {
+    "slug": "oxford-brown",
+    "name": "Oxford Shoes \u2014 Brown",
+    "price": 5999,
+    "category": "Footwear",
+    "image": "/assets/products/real/oxford-brown.png",
+    "short": "Cap-toe oxford with subtle burnish and stitched welt."
+  },
+  {
+    "slug": "shoulder-taupe",
+    "name": "Arc Shoulder Bag \u2014 Taupe",
+    "price": 3699,
+    "category": "Bags",
+    "image": "/assets/products/real/shoulder-taupe.png",
+    "short": "Curved profile with soft structure and hidden magnet."
+  },
+  {
+    "slug": "duffle-brown",
+    "name": "Weekender Duffle \u2014 Brown",
+    "price": 6999,
+    "category": "Bags",
+    "image": "/assets/products/real/duffle-brown.png",
+    "short": "Travel-sized duffle with reinforced straps and brass accents."
+  },
+  {
+    "slug": "tote-cognac",
+    "name": "Tall Tote \u2014 Cognac",
+    "price": 4499,
+    "category": "Bags",
+    "image": "/assets/products/real/tote-cognac.png",
+    "short": "Structured tote with upright handles and zipped pocket."
+  }
+]

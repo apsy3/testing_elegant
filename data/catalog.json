@@ -1,0 +1,73 @@
+[
+  {
+    "id": "ET-WORK-TOTE-CG",
+    "slug": "work-tote-cognac",
+    "title": "Work Tote \u2014 Cognac",
+    "collection": "Women",
+    "price": 7990,
+    "images": [
+      "/images/women-tote.png",
+      "/images/hero-caramel.png",
+      "/images/hero-bag-marble.png"
+    ],
+    "materials": "Top\u2011grain leather, nickel\u2011free hardware, microfiber lining",
+    "dimensions": "40 \u00d7 12 \u00d7 30 cm; 820 g",
+    "description": "Minimalist silhouette with a roomy interior and a padded laptop sleeve."
+  },
+  {
+    "id": "ET-OXFORD-BLACK",
+    "slug": "oxford-black",
+    "title": "Oxford \u2014 Black",
+    "collection": "Men",
+    "price": 9990,
+    "images": [
+      "/images/black-oxford.png",
+      "/images/hero-starry.png"
+    ],
+    "materials": "Smooth leather upper, leather lining, cushioned insole",
+    "dimensions": "EU sizes 40\u201346",
+    "description": "Classic plain-toe oxford with a sleek profile."
+  },
+  {
+    "id": "ET-OXFORD-BROWN",
+    "slug": "oxford-brown",
+    "title": "Cap-toe Oxford \u2014 Brown",
+    "collection": "Men",
+    "price": 10990,
+    "images": [
+      "/images/brown-oxford.png",
+      "/images/hero-starry.png"
+    ],
+    "materials": "Smooth leather upper, leather lining, cushioned insole",
+    "dimensions": "EU sizes 40\u201346",
+    "description": "Hand-polished brown oxford with cap-toe detailing."
+  },
+  {
+    "id": "ET-DUFFLE-CLASSIC",
+    "slug": "classic-duffle",
+    "title": "Classic Duffle \u2014 Cognac",
+    "collection": "Travel",
+    "price": 12990,
+    "images": [
+      "/images/duffle.png",
+      "/images/hero-caramel.png"
+    ],
+    "materials": "Pebbled leather, soft-gold hardware, detachable strap",
+    "dimensions": "50 \u00d7 25 \u00d7 25 cm",
+    "description": "A weekender built for road trips and red-eye flights."
+  },
+  {
+    "id": "ET-WALLET-BIFOLD",
+    "slug": "bifold-wallet",
+    "title": "Bifold Wallet \u2014 Espresso",
+    "collection": "Accessories",
+    "price": 2990,
+    "images": [
+      "/images/wallet.png",
+      "/images/hero-caramel.png"
+    ],
+    "materials": "Top-grain leather, 6 card slots, full-width note compartment",
+    "dimensions": "11 \u00d7 9.5 cm",
+    "description": "Slim profile with hand-inked edges."
+  }
+]

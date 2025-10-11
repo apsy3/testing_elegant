@@ -1,6 +1,5 @@
 import type { ShopifyProduct } from './shopify';
-import { getCatalogDefinition, normalizeProducts } from './catalog';
-import type { NormalizedProduct } from './catalog';
+import { getCatalogDefinition, normalizeProducts } from './taxonomy';
 
 export interface NavLeaf {
   title: string;
@@ -194,11 +193,9 @@ const countForSlug = (products: NormalizedProduct[], slug?: string[]) => {
   return products.filter((product) => definition.rule(product)).length;
 };
 
-export const buildNavigation = (products: ShopifyProduct[]): NavItem[] => {
-  if (!products || products.length === 0) {
-    return BASE_NAVIGATION;
-  }
+type NormalizedProduct = ReturnType<typeof normalizeProducts>[number];
 
+export const buildNavigation = (products: ShopifyProduct[]): NavItem[] => {
   const normalized = normalizeProducts(products);
 
   return BASE_NAVIGATION.map((item) => {

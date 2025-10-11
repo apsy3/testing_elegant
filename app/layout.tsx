@@ -11,12 +11,6 @@ const fraunces = Fraunces({ subsets: ['latin'], variable: '--font-fraunces' });
 
 export const metadata: Metadata = defaultMetadata;
 
-export const viewport = {
-  themeColor: '#ffffff'
-};
-
-export const dynamic = 'force-dynamic';
-
 export default function RootLayout({
   children
 }: {

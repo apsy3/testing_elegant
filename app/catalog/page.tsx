@@ -5,7 +5,6 @@ import { listProducts } from '@/lib/shopify';
 import { searchProducts } from '@/lib/search';
 
 export const revalidate = 60;
-export const dynamic = 'force-dynamic';
 
 type CatalogPageProps = {
   searchParams: {
@@ -35,13 +34,7 @@ export default async function CatalogPage({ searchParams }: CatalogPageProps) {
             Filter by tags or search to uncover the perfect addition to your wardrobe.
           </p>
         </div>
-        <CatalogFilters
-          key={`${searchParams.q ?? ''}-${searchParams.tag ?? ''}-${sort}`}
-          tags={tags}
-          initialQuery={searchParams.q ?? ''}
-          initialTag={searchParams.tag ?? ''}
-          initialSort={sort}
-        />
+        <CatalogFilters tags={tags} />
         <ProductGrid products={filtered} emptyState="No pieces match your search just yet." />
       </Container>
     </div>

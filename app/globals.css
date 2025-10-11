@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  @apply bg-white;
+  font-feature-settings: 'ss02' 1;
+}
+
+a {
+  @apply text-charcoal transition-colors duration-200 ease-out;
+}
+
+a:hover {
+  @apply text-gold;
+}
+
+::selection {
+  @apply bg-gold text-white;
+}
+
+.btn-focus {
+  @apply focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold;
+}

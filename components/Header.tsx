@@ -1,10 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 952310a (fix: allow filtering helper to constrain keys)
 import { useRouter, usePathname } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import { ShoppingBagIcon } from '@heroicons/react/24/outline';
@@ -24,55 +20,17 @@ export default function Header({ navItems = [] }: HeaderProps) {
   const pathname = usePathname();
   const [search, setSearch] = useState('');
   const [openNav, setOpenNav] = useState<string | null>(null);
-<<<<<<< HEAD
-=======
-import { useRouter, usePathname, useSearchParams } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
-import { ShoppingBagIcon } from '@heroicons/react/24/outline';
-import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
-import Container from './Container';
-import CartDrawer from './CartDrawer';
-import { useCartStore, selectCartCount } from '@/store/cart';
-import { cn } from '@/lib/utils';
-
-const links = [
-  { href: '/catalog', label: 'Catalog' },
-  { href: '/(marketing)/about', label: 'About' }
-];
-
-export default function Header() {
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const [search, setSearch] = useState(searchParams?.get('q') ?? '');
->>>>>>> origin/main
-=======
->>>>>>> 952310a (fix: allow filtering helper to constrain keys)
   const count = useCartStore(selectCartCount);
   const openCart = useCartStore((state) => state.openCart);
   const isOpen = useCartStore((state) => state.isOpen);
   const closeCart = useCartStore((state) => state.closeCart);
 
   useEffect(() => {
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-    setSearch(searchParams?.get('q') ?? '');
-  }, [searchParams]);
-
-  useEffect(() => {
->>>>>>> origin/main
-=======
->>>>>>> 952310a (fix: allow filtering helper to constrain keys)
     closeCart();
   }, [pathname, closeCart]);
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 952310a (fix: allow filtering helper to constrain keys)
     const params = new URLSearchParams();
     const trimmed = search.trim();
     if (trimmed) {
@@ -80,18 +38,6 @@ export default function Header() {
     }
     const queryString = params.toString();
     router.push(`/search${queryString ? `?${queryString}` : ''}`);
-<<<<<<< HEAD
-=======
-    const params = new URLSearchParams(searchParams?.toString() ?? '');
-    if (search) {
-      params.set('q', search);
-    } else {
-      params.delete('q');
-    }
-    router.push(`/catalog?${params.toString()}`);
->>>>>>> origin/main
-=======
->>>>>>> 952310a (fix: allow filtering helper to constrain keys)
   };
 
   const activeLink = useMemo(() => pathname?.split('?')[0], [pathname]);
@@ -103,10 +49,6 @@ export default function Header() {
           Heritage Atelier
         </Link>
         <nav className="hidden items-center gap-6 text-sm font-medium text-charcoal/70 md:flex">
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 952310a (fix: allow filtering helper to constrain keys)
           {(navItems.length ? navItems : NAVIGATION).map((item) => {
             const isActive = activeLink?.startsWith(item.href);
             const hasMenu = Boolean(item.groups && item.groups.length);
@@ -162,24 +104,6 @@ export default function Header() {
               </div>
             );
           })}
-<<<<<<< HEAD
-=======
-          {links.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              prefetch
-              className={cn(
-                'transition-colors duration-200',
-                activeLink === link.href ? 'text-charcoal' : 'hover:text-gold'
-              )}
-            >
-              {link.label}
-            </Link>
-          ))}
->>>>>>> origin/main
-=======
->>>>>>> 952310a (fix: allow filtering helper to constrain keys)
         </nav>
         <div className="flex flex-1 items-center justify-end gap-4">
           <form

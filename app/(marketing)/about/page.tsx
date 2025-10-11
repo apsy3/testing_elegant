@@ -1,15 +1,7 @@
 import Container from '@/components/Container';
 import Image from 'next/image';
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 export const dynamic = 'force-dynamic';
-=======
-export const revalidate = 3600;
->>>>>>> origin/main
-=======
-export const dynamic = 'force-dynamic';
->>>>>>> 952310a (fix: allow filtering helper to constrain keys)
 
 export default function AboutPage() {
   return (

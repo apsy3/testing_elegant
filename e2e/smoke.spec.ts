@@ -7,18 +7,8 @@ test.describe('Storefront smoke test', () => {
     await page.goto('/');
     await expect(page.locator('text=Featured Heirlooms')).toBeVisible();
 
-<<<<<<< HEAD
-<<<<<<< HEAD
     await page.getByRole('link', { name: 'Women' }).first().click();
     await expect(page).toHaveURL(/\/women/);
-=======
-    await page.getByRole('link', { name: 'Catalog' }).first().click();
-    await expect(page).toHaveURL(/\/catalog/);
->>>>>>> origin/main
-=======
-    await page.getByRole('link', { name: 'Women' }).first().click();
-    await expect(page).toHaveURL(/\/women/);
->>>>>>> 952310a (fix: allow filtering helper to constrain keys)
 
     const firstProduct = page.getByRole('link').filter({ hasText: '₹' }).first();
     await firstProduct.click();

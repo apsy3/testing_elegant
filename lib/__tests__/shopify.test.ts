@@ -1,27 +1,9 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-vi.mock('react', () => ({
-  cache: <T>(fn: T) => fn
-}));
-=======
-=======
->>>>>>> origin/main
-=======
->>>>>>> 952310a (fix: allow filtering helper to constrain keys)
 declare global {
   // eslint-disable-next-line no-var
   var fetch: typeof fetch;
 }
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> ea3c549 (refactor: simplify catalog definitions)
-=======
->>>>>>> origin/main
-=======
->>>>>>> 952310a (fix: allow filtering helper to constrain keys)
 
 describe('shopifyFetch', () => {
   beforeEach(() => {

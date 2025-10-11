@@ -18,21 +18,9 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*"]
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 952310a (fix: allow filtering helper to constrain keys)
     },
     "plugins": [{ "name": "next" }]
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-<<<<<<< HEAD
-=======
-    }
-  },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
->>>>>>> origin/main
-=======
->>>>>>> 952310a (fix: allow filtering helper to constrain keys)
   "exclude": ["node_modules"]
 }

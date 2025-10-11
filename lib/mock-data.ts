@@ -2,10 +2,6 @@ import type { ShopifyCollection, ShopifyProduct } from './shopify';
 
 const sharedDescription = `Each piece is hand-finished by master artisans using heritage techniques passed down through generations. Expect subtle variations that make every item one-of-a-kind.`;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 952310a (fix: allow filtering helper to constrain keys)
 const now = new Date();
 
 const daysAgo = (days: number) => new Date(now.getTime() - days * 24 * 60 * 60 * 1000).toISOString();
@@ -38,41 +34,10 @@ export const mockProducts: ShopifyProduct[] = [
     priceRange: {
       min: 34999,
       max: 34999,
-<<<<<<< HEAD
-=======
-export const mockProducts: ShopifyProduct[] = [
-  {
-    id: 'gid://shopify/Product/1',
-    handle: 'opal-silk-sari',
-    title: 'Opal Silk Sari',
-    description: `${sharedDescription}\n\nMaterials: Mulberry silk, zari border.`,
-    tags: ['sari', 'trending', 'new'],
-    featuredImage:
-      'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=1200&q=80',
-    images: [
-      {
-        url: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=1200&q=80',
-        altText: 'Opal silk sari draped on mannequin'
-      },
-      {
-        url: 'https://images.unsplash.com/photo-1514996937319-344454492b37?auto=format&fit=crop&w=1200&q=80',
-        altText: 'Close-up of zari border'
-      }
-    ],
-    priceRange: {
-      min: 28999,
-      max: 28999,
->>>>>>> origin/main
-=======
->>>>>>> 952310a (fix: allow filtering helper to constrain keys)
       currencyCode: 'INR'
     },
     variants: [
       {
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 952310a (fix: allow filtering helper to constrain keys)
         id: 'gid://shopify/ProductVariant/100',
         title: 'OS',
         price: 34999,
@@ -107,45 +72,10 @@ export const mockProducts: ShopifyProduct[] = [
     priceRange: {
       min: 27999,
       max: 27999,
-<<<<<<< HEAD
-=======
-        id: 'gid://shopify/ProductVariant/1',
-        title: 'Standard',
-        price: 28999,
-        availableForSale: true
-      }
-    ],
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString()
-  },
-  {
-    id: 'gid://shopify/Product/2',
-    handle: 'heritage-kundan-choker',
-    title: 'Heritage Kundan Choker',
-    description: `${sharedDescription}\n\nMaterials: 22k gold-plated silver, kundan stones.`,
-    tags: ['jewellery', 'trending'],
-    featuredImage:
-      'https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?auto=format&fit=crop&w=1200&q=80',
-    images: [
-      {
-        url: 'https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?auto=format&fit=crop&w=1200&q=80',
-        altText: 'Kundan choker on marble pedestal'
-      }
-    ],
-    priceRange: {
-      min: 45999,
-      max: 45999,
->>>>>>> origin/main
-=======
->>>>>>> 952310a (fix: allow filtering helper to constrain keys)
       currencyCode: 'INR'
     },
     variants: [
       {
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 952310a (fix: allow filtering helper to constrain keys)
         id: 'gid://shopify/ProductVariant/101',
         title: 'OS',
         price: 27999,
@@ -213,26 +143,6 @@ export const mockProducts: ShopifyProduct[] = [
       'length:hip',
       'new'
     ],
-<<<<<<< HEAD
-=======
-        id: 'gid://shopify/ProductVariant/2',
-        title: '16 inch',
-        price: 45999,
-        availableForSale: true
-      }
-    ],
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString()
-  },
-  {
-    id: 'gid://shopify/Product/3',
-    handle: 'lotus-ikat-jacket',
-    title: 'Lotus Ikat Jacket',
-    description: `${sharedDescription}\n\nMaterials: Handloom cotton, natural dyes.`,
-    tags: ['apparel', 'editorial'],
->>>>>>> origin/main
-=======
->>>>>>> 952310a (fix: allow filtering helper to constrain keys)
     featuredImage:
       'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1200&q=80',
     images: [
@@ -252,24 +162,12 @@ export const mockProducts: ShopifyProduct[] = [
     },
     variants: [
       {
-<<<<<<< HEAD
-<<<<<<< HEAD
         id: 'gid://shopify/ProductVariant/103',
-=======
-        id: 'gid://shopify/ProductVariant/3',
->>>>>>> origin/main
-=======
-        id: 'gid://shopify/ProductVariant/103',
->>>>>>> 952310a (fix: allow filtering helper to constrain keys)
         title: 'S-M',
         price: 18999,
         availableForSale: true
       }
     ],
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 952310a (fix: allow filtering helper to constrain keys)
     createdAt: daysAgo(18),
     updatedAt: daysAgo(4)
   },
@@ -508,13 +406,6 @@ export const mockProducts: ShopifyProduct[] = [
     ],
     createdAt: daysAgo(120),
     updatedAt: daysAgo(7)
-<<<<<<< HEAD
-=======
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString()
->>>>>>> origin/main
-=======
->>>>>>> 952310a (fix: allow filtering helper to constrain keys)
   }
 ];
 

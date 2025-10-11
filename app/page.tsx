@@ -4,10 +4,6 @@ import Container from '@/components/Container';
 import ProductGrid from '@/components/ProductGrid';
 import { Button } from '@/components/Button';
 import { listProducts, productsByCollection } from '@/lib/shopify';
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 952310a (fix: allow filtering helper to constrain keys)
 import { HERO_IMAGE_URL } from '@/lib/config';
 import { normalizeProducts } from '@/lib/catalog';
 
@@ -15,24 +11,10 @@ export const dynamic = 'force-dynamic';
 
 export default async function HomePage() {
   const [rawProducts, collectionProducts] = await Promise.all([
-<<<<<<< HEAD
-=======
-
-export const revalidate = 60;
-
-export default async function HomePage() {
-  const [products, collectionProducts] = await Promise.all([
->>>>>>> origin/main
-=======
->>>>>>> 952310a (fix: allow filtering helper to constrain keys)
     listProducts(),
     productsByCollection('editorial-trending')
   ]);
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 952310a (fix: allow filtering helper to constrain keys)
   const normalized = normalizeProducts(rawProducts);
   const heroSource = collectionProducts.length ? normalizeProducts(collectionProducts) : normalized;
   const heroProducts = heroSource.filter((product) => product.isNew).slice(0, 6);
@@ -40,13 +22,6 @@ export default async function HomePage() {
     .filter((product) => product.trending.bestsellers || product.trending.mostWanted)
     .slice(0, 6);
   const saleHighlights = normalized.filter((product) => product.isSale).slice(0, 4);
-<<<<<<< HEAD
-=======
-  const heroProducts = collectionProducts.length ? collectionProducts : products.slice(0, 6);
-  const trendingProducts = products.filter((product) => product.tags.includes('trending'));
->>>>>>> origin/main
-=======
->>>>>>> 952310a (fix: allow filtering helper to constrain keys)
 
   return (
     <div className="space-y-24 pb-24">
@@ -73,18 +48,8 @@ export default async function HomePage() {
             </p>
             <div className="flex flex-wrap gap-3">
               <Button asChild>
-<<<<<<< HEAD
-<<<<<<< HEAD
                 <Link href="/new/all" prefetch>
                   Explore New Arrivals
-=======
-                <Link href="/catalog" prefetch>
-                  Explore the Collection
->>>>>>> origin/main
-=======
-                <Link href="/new/all" prefetch>
-                  Explore New Arrivals
->>>>>>> 952310a (fix: allow filtering helper to constrain keys)
                 </Link>
               </Button>
               <Button variant="secondary" asChild>
@@ -96,28 +61,13 @@ export default async function HomePage() {
           </div>
           <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[3rem] shadow-soft">
             <Image
-<<<<<<< HEAD
-<<<<<<< HEAD
               src={HERO_IMAGE_URL}
-=======
-              src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=1200&q=80"
->>>>>>> origin/main
-=======
-              src={HERO_IMAGE_URL}
->>>>>>> 952310a (fix: allow filtering helper to constrain keys)
               alt="Model wearing handcrafted attire"
               fill
               className="object-cover"
               sizes="(max-width: 768px) 100vw, 50vw"
               priority
-<<<<<<< HEAD
-<<<<<<< HEAD
               unoptimized
-=======
->>>>>>> origin/main
-=======
-              unoptimized
->>>>>>> 952310a (fix: allow filtering helper to constrain keys)
             />
           </div>
         </Container>
@@ -132,25 +82,11 @@ export default async function HomePage() {
                 Curated edit of rare finds and soon-to-sell-out treasures.
               </p>
             </div>
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 952310a (fix: allow filtering helper to constrain keys)
             <Link href="/women" className="text-sm uppercase tracking-widest text-charcoal/60 hover:text-gold" prefetch>
               View the edit
             </Link>
           </div>
           <ProductGrid products={heroProducts.length ? heroProducts : normalized.slice(0, 6)} />
-<<<<<<< HEAD
-=======
-            <Link href="/catalog" className="text-sm uppercase tracking-widest text-charcoal/60 hover:text-gold" prefetch>
-              View all pieces
-            </Link>
-          </div>
-          <ProductGrid products={heroProducts.slice(0, 6)} />
->>>>>>> origin/main
-=======
->>>>>>> 952310a (fix: allow filtering helper to constrain keys)
         </Container>
       </section>
 
@@ -192,25 +128,13 @@ export default async function HomePage() {
               <h2 className="font-display text-3xl text-charcoal">Trending Now</h2>
               <p className="text-sm text-charcoal/60">Pieces our collectors can’t stop talking about.</p>
             </div>
-<<<<<<< HEAD
-<<<<<<< HEAD
             <Link href="/trending/bestsellers" className="text-sm uppercase tracking-widest text-charcoal/60 hover:text-gold" prefetch>
-=======
-            <Link href="/catalog?tag=trending" className="text-sm uppercase tracking-widest text-charcoal/60 hover:text-gold" prefetch>
->>>>>>> origin/main
-=======
-            <Link href="/trending/bestsellers" className="text-sm uppercase tracking-widest text-charcoal/60 hover:text-gold" prefetch>
->>>>>>> 952310a (fix: allow filtering helper to constrain keys)
               Shop trending
             </Link>
           </div>
           <ProductGrid products={trendingProducts.slice(0, 6)} emptyState="Check back soon for new releases." />
         </Container>
       </section>
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 952310a (fix: allow filtering helper to constrain keys)
 
       <section>
         <Container className="space-y-8">
@@ -229,11 +153,6 @@ export default async function HomePage() {
           />
         </Container>
       </section>
-<<<<<<< HEAD
-=======
->>>>>>> origin/main
-=======
->>>>>>> 952310a (fix: allow filtering helper to constrain keys)
     </div>
   );
 }

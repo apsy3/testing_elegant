@@ -1,13 +1,5 @@
 import type { Filters } from './search';
-<<<<<<< HEAD
-<<<<<<< HEAD
 import type { NormalizedProduct, FilterKey } from './catalog';
-=======
-import type { NormalizedProduct, FilterKey } from './taxonomy';
->>>>>>> origin/main
-=======
-import type { NormalizedProduct, FilterKey } from './catalog';
->>>>>>> 952310a (fix: allow filtering helper to constrain keys)
 import { buildFilterGroups } from './search';
 import type { FilterGroup } from '@/components/CatalogFilters';
 

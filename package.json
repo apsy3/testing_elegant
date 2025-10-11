@@ -2,20 +2,11 @@
   "name": "luxury-headless-storefront",
   "version": "1.0.0",
   "private": true,
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 952310a (fix: allow filtering helper to constrain keys)
   "packageManager": "pnpm@9.1.0",
   "engines": {
     "node": "^18.18.0 || ^20.0.0",
     "pnpm": "^9.0.0"
   },
-<<<<<<< HEAD
-=======
->>>>>>> origin/main
-=======
->>>>>>> 952310a (fix: allow filtering helper to constrain keys)
   "scripts": {
     "dev": "next dev",
     "build": "next build",

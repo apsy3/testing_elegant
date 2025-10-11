@@ -1,0 +1,9 @@
+old_url,new_url
+/catalog,/search
+/catalog?tag=trending,/trending/bestsellers
+/catalog?tag=new,/new/all
+/catalog?tag=jewellery,/jewellery
+/catalog?tag=apparel,/women/apparel
+/catalog?tag=shoes,/women/shoes
+/catalog?tag=accessories,/women/accessories
+/catalog?tag=sale,/sale

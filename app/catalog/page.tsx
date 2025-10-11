@@ -1,12 +1,10 @@
-import { Suspense } from 'react';
 import Container from '@/components/Container';
 import ProductGrid from '@/components/ProductGrid';
 import CatalogFilters from '@/components/CatalogFilters';
-import Skeleton from '@/components/Skeleton';
 import { listProducts } from '@/lib/shopify';
 import { searchProducts } from '@/lib/search';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 type CatalogPageProps = {
   searchParams: {
@@ -36,30 +34,9 @@ export default async function CatalogPage({ searchParams }: CatalogPageProps) {
             Filter by tags or search to uncover the perfect addition to your wardrobe.
           </p>
         </div>
-        <Suspense fallback={<FiltersFallback />}>
-          <CatalogFilters
-            key={`${searchParams.q ?? ''}-${searchParams.tag ?? ''}-${sort}`}
-            tags={tags}
-            initialQuery={searchParams.q ?? ''}
-            initialTag={searchParams.tag ?? ''}
-            initialSort={sort}
-          />
-        </Suspense>
+        <CatalogFilters tags={tags} />
         <ProductGrid products={filtered} emptyState="No pieces match your search just yet." />
       </Container>
-    </div>
-  );
-}
-
-function FiltersFallback() {
-  return (
-    <div className="space-y-6 rounded-3xl border border-charcoal/10 bg-white/60 p-6 shadow-soft">
-      <Skeleton className="h-12 rounded-full" />
-      <div className="flex flex-wrap gap-2">
-        {Array.from({ length: 6 }).map((_, index) => (
-          <Skeleton key={index} className="h-9 w-24 rounded-full" />
-        ))}
-      </div>
     </div>
   );
 }

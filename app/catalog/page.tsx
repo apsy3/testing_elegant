@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import Container from '@/components/Container';
 import ProductGrid from '@/components/ProductGrid';
 import CatalogFilters from '@/components/CatalogFilters';
@@ -6,6 +7,8 @@ import { listProducts } from '@/lib/shopify';
 import { searchProducts } from '@/lib/search';
 
 =======
+=======
+>>>>>>> e3974fd (fix: unblock static builds)
 import { Suspense } from 'react';
 import dynamic from 'next/dynamic';
 import Container from '@/components/Container';
@@ -25,7 +28,10 @@ const FiltersFallback = () => (
   </div>
 );
 
+<<<<<<< HEAD
 >>>>>>> 9f14315 (fix: drop useSearchParams to unblock static build)
+=======
+>>>>>>> e3974fd (fix: unblock static builds)
 export const revalidate = 60;
 
 type CatalogPageProps = {
@@ -37,13 +43,19 @@ type CatalogPageProps = {
 };
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> e3974fd (fix: unblock static builds)
 const CatalogFiltersClient = dynamic(() => import('@/components/CatalogFilters'), {
   ssr: false,
   suspense: true
 });
 
+<<<<<<< HEAD
 >>>>>>> 9f14315 (fix: drop useSearchParams to unblock static build)
+=======
+>>>>>>> e3974fd (fix: unblock static builds)
 export default async function CatalogPage({ searchParams }: CatalogPageProps) {
   const products = await listProducts();
   const tags = Array.from(new Set(products.flatMap((product) => product.tags))).filter(Boolean);
@@ -65,6 +77,7 @@ export default async function CatalogPage({ searchParams }: CatalogPageProps) {
           </p>
         </div>
 <<<<<<< HEAD
+<<<<<<< HEAD
         <CatalogFilters
           key={`${searchParams.q ?? ''}-${searchParams.tag ?? ''}-${sort}`}
           tags={tags}
@@ -83,6 +96,11 @@ export default async function CatalogPage({ searchParams }: CatalogPageProps) {
           />
         </Suspense>
 >>>>>>> 9f14315 (fix: drop useSearchParams to unblock static build)
+=======
+        <Suspense fallback={<FiltersFallback />}>
+          <CatalogFiltersClient tags={tags} />
+        </Suspense>
+>>>>>>> e3974fd (fix: unblock static builds)
         <ProductGrid products={filtered} emptyState="No pieces match your search just yet." />
       </Container>
     </div>

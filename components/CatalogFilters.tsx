@@ -1,7 +1,12 @@
 'use client';
 
+<<<<<<< HEAD
 import { useEffect, useMemo, useRef, useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
+=======
+import { useEffect, useMemo, useState, useTransition } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+>>>>>>> e3974fd (fix: unblock static builds)
 import { cn } from '@/lib/utils';
 
 const sortOptions = [
@@ -12,6 +17,7 @@ const sortOptions = [
 
 interface CatalogFiltersProps {
   tags: string[];
+<<<<<<< HEAD
   initialQuery?: string;
   initialTag?: string;
   initialSort?: 'newest' | 'price-asc' | 'price-desc';
@@ -50,12 +56,29 @@ export default function CatalogFilters({
     }
 
     const queryString = params.toString();
+=======
+}
+
+export default function CatalogFilters({ tags }: CatalogFiltersProps) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [query, setQuery] = useState(searchParams.get('q') ?? '');
+  const [isPending, startTransition] = useTransition();
+
+  useEffect(() => {
+    setQuery(searchParams.get('q') ?? '');
+  }, [searchParams]);
+
+  const applyParams = (next: URLSearchParams) => {
+    const queryString = next.toString();
+>>>>>>> e3974fd (fix: unblock static builds)
     startTransition(() => {
       router.push(`/catalog${queryString ? `?${queryString}` : ''}`);
     });
   };
 
   useEffect(() => {
+<<<<<<< HEAD
     if (
       query === lastSyncedParams.current.query &&
       selectedTag === lastSyncedParams.current.tag &&
@@ -71,16 +94,56 @@ export default function CatalogFilters({
 
     return () => clearTimeout(handler);
   }, [query, selectedTag, sort]);
+=======
+    const handler = setTimeout(() => {
+      const next = new URLSearchParams(searchParams.toString());
+      if (query) {
+        next.set('q', query);
+      } else {
+        next.delete('q');
+      }
+      if (next.toString() !== searchParams.toString()) {
+        applyParams(next);
+      }
+    }, 250);
+
+    return () => clearTimeout(handler);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query]);
+
+  const activeTag = searchParams.get('tag') ?? '';
+  const activeSort = searchParams.get('sort') ?? 'newest';
+>>>>>>> e3974fd (fix: unblock static builds)
 
   const sortedTags = useMemo(() => [...tags].sort((a, b) => a.localeCompare(b)), [tags]);
 
   const handleTagClick = (tag: string) => {
+<<<<<<< HEAD
     setSelectedTag((current) => (current === tag ? '' : tag));
   };
 
   const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const nextSort = event.target.value as 'newest' | 'price-asc' | 'price-desc';
     setSort(nextSort);
+=======
+    const next = new URLSearchParams(searchParams.toString());
+    if (activeTag === tag) {
+      next.delete('tag');
+    } else {
+      next.set('tag', tag);
+    }
+    applyParams(next);
+  };
+
+  const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const next = new URLSearchParams(searchParams.toString());
+    if (event.target.value === 'newest') {
+      next.delete('sort');
+    } else {
+      next.set('sort', event.target.value);
+    }
+    applyParams(next);
+>>>>>>> e3974fd (fix: unblock static builds)
   };
 
   return (
@@ -96,6 +159,7 @@ export default function CatalogFilters({
             aria-label="Search catalog"
           />
         </label>
+<<<<<<< HEAD
           <label className="flex items-center gap-3 text-sm text-charcoal/70">
             <span>Sort by</span>
             <select
@@ -104,6 +168,16 @@ export default function CatalogFilters({
               value={sort}
               aria-label="Sort products"
             >
+=======
+        <label className="flex items-center gap-3 text-sm text-charcoal/70">
+          <span>Sort by</span>
+          <select
+            className="rounded-full border border-charcoal/10 bg-white px-4 py-2 text-sm focus:border-gold focus:outline-none"
+            onChange={handleSortChange}
+            value={activeSort}
+            aria-label="Sort products"
+          >
+>>>>>>> e3974fd (fix: unblock static builds)
             {sortOptions.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
@@ -118,7 +192,11 @@ export default function CatalogFilters({
           onClick={() => handleTagClick('')}
           className={cn(
             'rounded-full border px-4 py-2 text-xs uppercase tracking-widest transition-colors',
+<<<<<<< HEAD
             selectedTag === ''
+=======
+            activeTag === ''
+>>>>>>> e3974fd (fix: unblock static builds)
               ? 'border-gold bg-gold text-white'
               : 'border-charcoal/10 bg-white text-charcoal hover:border-gold hover:text-gold'
           )}
@@ -132,7 +210,11 @@ export default function CatalogFilters({
             onClick={() => handleTagClick(tag)}
             className={cn(
               'rounded-full border px-4 py-2 text-xs uppercase tracking-widest transition-colors',
+<<<<<<< HEAD
               selectedTag === tag
+=======
+              activeTag === tag
+>>>>>>> e3974fd (fix: unblock static builds)
                 ? 'border-gold bg-gold text-white'
                 : 'border-charcoal/10 bg-white text-charcoal hover:border-gold hover:text-gold'
             )}

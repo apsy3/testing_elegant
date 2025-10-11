@@ -2,10 +2,14 @@
 
 import Link from 'next/link';
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 =======
 import { useRouter, usePathname } from 'next/navigation';
 >>>>>>> 9f14315 (fix: drop useSearchParams to unblock static build)
+=======
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
+>>>>>>> e3974fd (fix: unblock static builds)
 import { useEffect, useMemo, useState } from 'react';
 import { ShoppingBagIcon } from '@heroicons/react/24/outline';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
@@ -23,11 +27,16 @@ export default function Header() {
   const router = useRouter();
   const pathname = usePathname();
 <<<<<<< HEAD
+<<<<<<< HEAD
   const searchParams = useSearchParams();
   const [search, setSearch] = useState(searchParams?.get('q') ?? '');
 =======
   const [search, setSearch] = useState('');
 >>>>>>> 9f14315 (fix: drop useSearchParams to unblock static build)
+=======
+  const searchParams = useSearchParams();
+  const [search, setSearch] = useState(searchParams?.get('q') ?? '');
+>>>>>>> e3974fd (fix: unblock static builds)
   const count = useCartStore(selectCartCount);
   const openCart = useCartStore((state) => state.openCart);
   const isOpen = useCartStore((state) => state.isOpen);
@@ -35,18 +44,27 @@ export default function Header() {
 
   useEffect(() => {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> e3974fd (fix: unblock static builds)
     setSearch(searchParams?.get('q') ?? '');
   }, [searchParams]);
 
   useEffect(() => {
+<<<<<<< HEAD
 =======
 >>>>>>> 9f14315 (fix: drop useSearchParams to unblock static build)
+=======
+>>>>>>> e3974fd (fix: unblock static builds)
     closeCart();
   }, [pathname, closeCart]);
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> e3974fd (fix: unblock static builds)
     const params = new URLSearchParams(searchParams?.toString() ?? '');
     if (search) {
       params.set('q', search);
@@ -54,6 +72,7 @@ export default function Header() {
       params.delete('q');
     }
     router.push(`/catalog?${params.toString()}`);
+<<<<<<< HEAD
 =======
     const params = new URLSearchParams();
     const trimmed = search.trim();
@@ -63,6 +82,8 @@ export default function Header() {
     const queryString = params.toString();
     router.push(`/catalog${queryString ? `?${queryString}` : ''}`);
 >>>>>>> 9f14315 (fix: drop useSearchParams to unblock static build)
+=======
+>>>>>>> e3974fd (fix: unblock static builds)
   };
 
   const activeLink = useMemo(() => pathname?.split('?')[0], [pathname]);

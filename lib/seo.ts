@@ -1,8 +1,12 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import type { Metadata } from 'next';
 =======
 import type { Metadata, Viewport } from 'next';
 >>>>>>> 9f14315 (fix: drop useSearchParams to unblock static build)
+=======
+import type { Metadata, Viewport } from 'next';
+>>>>>>> e3974fd (fix: unblock static builds)
 import { SITE_CONFIG } from './config';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://heritage-atelier.example';
@@ -33,10 +37,16 @@ export const metadata: Metadata = {
   }
 };
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> e3974fd (fix: unblock static builds)
 
 export const viewport: Viewport = {
   themeColor: '#ffffff',
   colorScheme: 'light'
 };
+<<<<<<< HEAD
 >>>>>>> 9f14315 (fix: drop useSearchParams to unblock static build)
+=======
+>>>>>>> e3974fd (fix: unblock static builds)

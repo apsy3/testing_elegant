@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 'use client';
 
 import Link from 'next/link';
@@ -110,3 +111,20 @@ const HeaderClient = dynamic(() => import('./HeaderClient'), {
 
 export default HeaderClient;
 >>>>>>> 9f14315 (fix: drop useSearchParams to unblock static build)
+=======
+import { Suspense } from 'react';
+import dynamic from 'next/dynamic';
+
+const HeaderClient = dynamic(() => import('./HeaderClient'), {
+  ssr: false,
+  suspense: true
+});
+
+export default function Header() {
+  return (
+    <Suspense fallback={<div className="h-20 border-b border-charcoal/10 bg-white" />}>
+      <HeaderClient />
+    </Suspense>
+  );
+}
+>>>>>>> e3974fd (fix: unblock static builds)

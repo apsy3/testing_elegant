@@ -1,10 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { listProducts } from '@/lib/shopify';
-<<<<<<< HEAD
-import { allCollectionSlugs } from '@/lib/catalog';
-=======
 import { allCollectionSlugs } from '@/lib/taxonomy';
->>>>>>> 1b3fbaf (fix: align search utilities with shared exports)
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://heritage-atelier.example';
 

@@ -1,74 +1,44 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState, useTransition } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { FunnelIcon } from '@heroicons/react/24/outline';
-import type { Filters, SortSpec } from '@/lib/search';
+import type { FilterGroup, ActiveFilters, SortOption } from '@/lib/search';
+import { serializeFilters } from '@/lib/search';
 
-export interface FilterGroupOption {
-  value: string;
-  label: string;
-  count: number;
-}
-
-export interface FilterGroup {
-  key: string;
-  label: string;
-  options: FilterGroupOption[];
-}
+const sortOptions: Array<{ value: SortOption; label: string }> = [
+  { value: 'newest', label: 'Newest' },
+  { value: 'price-asc', label: 'Price: Low to High' },
+  { value: 'price-desc', label: 'Price: High to Low' }
+];
 
 interface CatalogFiltersProps {
   groups: FilterGroup[];
   initialQuery?: string;
-  initialSort?: SortSpec;
-  activeFilters: Filters;
+  initialSort?: SortOption;
+  activeFilters: ActiveFilters;
 }
-
-const SORT_OPTIONS: Array<{ value: string; label: string }> = [
-  { value: 'new_desc', label: 'Newest' },
-  { value: 'price_asc', label: 'Price: Low to High' },
-  { value: 'price_desc', label: 'Price: High to Low' },
-  { value: 'new_asc', label: 'Oldest' },
-  { value: 'relevance', label: 'Recommended' }
-];
-
-const encodeSort = (spec?: SortSpec): string => {
-  if (!spec) return 'new_desc';
-  if (spec.key === 'price' && spec.dir === 'asc') return 'price_asc';
-  if (spec.key === 'price' && spec.dir === 'desc') return 'price_desc';
-  if (spec.key === 'new' && spec.dir === 'asc') return 'new_asc';
-  if (spec.key === 'new' && spec.dir === 'desc') return 'new_desc';
-  return 'relevance';
-};
 
 export default function CatalogFilters({
   groups,
   initialQuery = '',
-  initialSort,
+  initialSort = 'newest',
   activeFilters
 }: CatalogFiltersProps) {
   const router = useRouter();
   const pathname = usePathname();
   const [query, setQuery] = useState(initialQuery);
-  const [sortValue, setSortValue] = useState<string>(encodeSort(initialSort));
-  const [selectedFilters, setSelectedFilters] = useState<Filters>(activeFilters);
+  const [sort, setSort] = useState<SortOption>(initialSort);
+  const [selectedFilters, setSelectedFilters] = useState<ActiveFilters>(activeFilters);
   const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({});
   const [isPending, startTransition] = useTransition();
-  const lastSync = useRef({
-    query: initialQuery,
-    sortValue: encodeSort(initialSort),
-    filters: activeFilters
-  });
+  const lastSync = useRef({ query: initialQuery, sort: initialSort, filters: activeFilters });
 
   useEffect(() => {
     setQuery(initialQuery);
-    setSortValue(encodeSort(initialSort));
+    setSort(initialSort);
     setSelectedFilters(activeFilters);
-    lastSync.current = {
-      query: initialQuery,
-      sortValue: encodeSort(initialSort),
-      filters: activeFilters
-    };
+    lastSync.current = { query: initialQuery, sort: initialSort, filters: activeFilters };
   }, [initialQuery, initialSort, activeFilters]);
 
   const toggleFilter = (key: string, value: string) => {
@@ -91,32 +61,26 @@ export default function CatalogFilters({
   };
 
   const buildSearchParams = () => {
-    const params = new URLSearchParams();
-    Object.entries(selectedFilters).forEach(([key, values]) => {
-      if (values && values.length) {
-        params.set(`f.${key}`, values.join(','));
-      }
-    });
+    const params = serializeFilters(selectedFilters);
     if (query.trim()) {
       params.set('q', query.trim());
     }
-    if (sortValue && sortValue !== 'new_desc') {
-      params.set('sort', sortValue);
+    if (sort !== 'newest') {
+      params.set('sort', sort);
     }
     return params;
   };
 
   useEffect(() => {
-    const { query: lastQuery, sortValue: lastSort, filters: lastFilters } = lastSync.current;
+    const { query: lastQuery, sort: lastSort, filters: lastFilters } = lastSync.current;
     const sameQuery = lastQuery === query;
-    const sameSort = lastSort === sortValue;
+    const sameSort = lastSort === sort;
     const sameFilters = JSON.stringify(lastFilters) === JSON.stringify(selectedFilters);
     if (sameQuery && sameSort && sameFilters) {
       return;
     }
-
     const handler = setTimeout(() => {
-      lastSync.current = { query, sortValue, filters: selectedFilters };
+      lastSync.current = { query, sort, filters: selectedFilters };
       const params = buildSearchParams();
       const queryString = params.toString();
       startTransition(() => {
@@ -125,7 +89,7 @@ export default function CatalogFilters({
     }, 200);
 
     return () => clearTimeout(handler);
-  }, [query, sortValue, selectedFilters, pathname, router]);
+  }, [query, sort, selectedFilters, pathname, router]);
 
   const isFiltering = useMemo(
     () => Object.values(selectedFilters).some((values) => values && values.length > 0),
@@ -149,11 +113,11 @@ export default function CatalogFilters({
           <span>Sort</span>
           <select
             className="rounded-full border border-charcoal/10 bg-white px-4 py-2 text-sm focus:border-gold focus:outline-none"
-            onChange={(event) => setSortValue(event.target.value)}
-            value={sortValue}
+            onChange={(event) => setSort(event.target.value as SortOption)}
+            value={sort}
             aria-label="Sort products"
           >
-            {SORT_OPTIONS.map((option) => (
+            {sortOptions.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
               </option>

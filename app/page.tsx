@@ -5,11 +5,7 @@ import ProductGrid from '@/components/ProductGrid';
 import { Button } from '@/components/Button';
 import { listProducts, productsByCollection } from '@/lib/shopify';
 import { HERO_IMAGE_URL } from '@/lib/config';
-<<<<<<< HEAD
-import { normalizeProducts } from '@/lib/catalog';
-=======
 import { normalizeProducts } from '@/lib/taxonomy';
->>>>>>> 1b3fbaf (fix: align search utilities with shared exports)
 
 export const dynamic = 'force-dynamic';
 

@@ -13,7 +13,11 @@ import {
   listCatalogDefinitions,
   normalizeProducts,
   type CatalogDefinition
+<<<<<<< HEAD
 } from '@/lib/catalog';
+=======
+} from '@/lib/taxonomy';
+>>>>>>> 1b3fbaf (fix: align search utilities with shared exports)
 
 export const dynamic = 'force-dynamic';
 

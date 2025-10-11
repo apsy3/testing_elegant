@@ -2,7 +2,11 @@ import Container from '@/components/Container';
 import CatalogFilters from '@/components/CatalogFilters';
 import ProductGrid from '@/components/ProductGrid';
 import { listProducts } from '@/lib/shopify';
+<<<<<<< HEAD
 import { normalizeProducts, type FilterKey } from '@/lib/catalog';
+=======
+import { normalizeProducts, type FilterKey } from '@/lib/taxonomy';
+>>>>>>> 1b3fbaf (fix: align search utilities with shared exports)
 import {
   applyFilters,
   parseFiltersFromSearchParams,

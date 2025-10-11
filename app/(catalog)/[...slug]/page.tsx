@@ -10,7 +10,11 @@ import {
   type NormalizedProduct,
   type CatalogDefinition,
   type FilterKey
+<<<<<<< HEAD
 } from '@/lib/catalog';
+=======
+} from '@/lib/taxonomy';
+>>>>>>> 1b3fbaf (fix: align search utilities with shared exports)
 import {
   applyFilters,
   parseFiltersFromSearchParams,

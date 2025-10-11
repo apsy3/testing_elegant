@@ -2,24 +2,16 @@ import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
 
+// next.config.mjs
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  experimental: {
-    serverActions: true
-  },
   images: {
     remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'cdn.shopify.com'
-      },
-      {
-        protocol: 'https',
-        hostname: 'images.unsplash.com'
-      }
-    ]
-  }
+      { protocol: 'https', hostname: '**.shopifycdn.com' },
+      { protocol: 'https', hostname: '**.cdn.shopify.com' },
+    ],
+  },
 };
 
 export default nextConfig;

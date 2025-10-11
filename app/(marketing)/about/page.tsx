@@ -1,7 +1,7 @@
 import Container from '@/components/Container';
 import Image from 'next/image';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 3600;
 
 export default function AboutPage() {
   return (

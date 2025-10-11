@@ -1,5 +1,5 @@
 import type { Filters } from './search';
-import type { NormalizedProduct, FilterKey } from './catalog';
+import type { NormalizedProduct, FilterKey } from './taxonomy';
 import { buildFilterGroups } from './search';
 import type { FilterGroup } from '@/components/CatalogFilters';
 

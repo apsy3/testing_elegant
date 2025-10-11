@@ -6,7 +6,6 @@ import { Button } from '@/components/Button';
 import { listProducts, productsByCollection } from '@/lib/shopify';
 
 export const revalidate = 60;
-export const dynamic = 'force-dynamic';
 
 export default async function HomePage() {
   const [products, collectionProducts] = await Promise.all([

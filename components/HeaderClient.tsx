@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useRouter, usePathname } from 'next/navigation';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import { ShoppingBagIcon } from '@heroicons/react/24/outline';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
@@ -18,11 +18,16 @@ const links = [
 export default function Header() {
   const router = useRouter();
   const pathname = usePathname();
-  const [search, setSearch] = useState('');
+  const searchParams = useSearchParams();
+  const [search, setSearch] = useState(searchParams?.get('q') ?? '');
   const count = useCartStore(selectCartCount);
   const openCart = useCartStore((state) => state.openCart);
   const isOpen = useCartStore((state) => state.isOpen);
   const closeCart = useCartStore((state) => state.closeCart);
+
+  useEffect(() => {
+    setSearch(searchParams?.get('q') ?? '');
+  }, [searchParams]);
 
   useEffect(() => {
     closeCart();
@@ -30,13 +35,13 @@ export default function Header() {
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const params = new URLSearchParams();
-    const trimmed = search.trim();
-    if (trimmed) {
-      params.set('q', trimmed);
+    const params = new URLSearchParams(searchParams?.toString() ?? '');
+    if (search) {
+      params.set('q', search);
+    } else {
+      params.delete('q');
     }
-    const queryString = params.toString();
-    router.push(`/catalog${queryString ? `?${queryString}` : ''}`);
+    router.push(`/catalog?${params.toString()}`);
   };
 
   const activeLink = useMemo(() => pathname?.split('?')[0], [pathname]);

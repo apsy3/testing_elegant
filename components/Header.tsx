@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 'use client';
 
 import Link from 'next/link';
@@ -100,3 +101,12 @@ export default function Header() {
     </header>
   );
 }
+=======
+import dynamic from 'next/dynamic';
+
+const HeaderClient = dynamic(() => import('./HeaderClient'), {
+  ssr: false
+});
+
+export default HeaderClient;
+>>>>>>> 9f14315 (fix: drop useSearchParams to unblock static build)

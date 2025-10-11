@@ -1,9 +1,31 @@
+<<<<<<< HEAD
 import Container from '@/components/Container';
 import ProductGrid from '@/components/ProductGrid';
 import CatalogFilters from '@/components/CatalogFilters';
 import { listProducts } from '@/lib/shopify';
 import { searchProducts } from '@/lib/search';
 
+=======
+import { Suspense } from 'react';
+import dynamic from 'next/dynamic';
+import Container from '@/components/Container';
+import ProductGrid from '@/components/ProductGrid';
+import Skeleton from '@/components/Skeleton';
+import { listProducts } from '@/lib/shopify';
+import { searchProducts } from '@/lib/search';
+
+const FiltersFallback = () => (
+  <div className="space-y-4 rounded-3xl border border-charcoal/10 bg-white/60 p-6">
+    <Skeleton className="h-12 w-full rounded-full" />
+    <div className="flex flex-wrap gap-3">
+      {Array.from({ length: 6 }).map((_, index) => (
+        <Skeleton key={index} className="h-9 w-24 rounded-full" />
+      ))}
+    </div>
+  </div>
+);
+
+>>>>>>> 9f14315 (fix: drop useSearchParams to unblock static build)
 export const revalidate = 60;
 
 type CatalogPageProps = {
@@ -14,6 +36,14 @@ type CatalogPageProps = {
   };
 };
 
+<<<<<<< HEAD
+=======
+const CatalogFiltersClient = dynamic(() => import('@/components/CatalogFilters'), {
+  ssr: false,
+  suspense: true
+});
+
+>>>>>>> 9f14315 (fix: drop useSearchParams to unblock static build)
 export default async function CatalogPage({ searchParams }: CatalogPageProps) {
   const products = await listProducts();
   const tags = Array.from(new Set(products.flatMap((product) => product.tags))).filter(Boolean);
@@ -34,6 +64,7 @@ export default async function CatalogPage({ searchParams }: CatalogPageProps) {
             Filter by tags or search to uncover the perfect addition to your wardrobe.
           </p>
         </div>
+<<<<<<< HEAD
         <CatalogFilters
           key={`${searchParams.q ?? ''}-${searchParams.tag ?? ''}-${sort}`}
           tags={tags}
@@ -41,6 +72,17 @@ export default async function CatalogPage({ searchParams }: CatalogPageProps) {
           initialTag={searchParams.tag ?? ''}
           initialSort={sort}
         />
+=======
+        <Suspense fallback={<FiltersFallback />}>
+          <CatalogFiltersClient
+            key={`${searchParams.q ?? ''}-${searchParams.tag ?? ''}-${sort}`}
+            tags={tags}
+            initialQuery={searchParams.q ?? ''}
+            initialTag={searchParams.tag ?? ''}
+            initialSort={sort}
+          />
+        </Suspense>
+>>>>>>> 9f14315 (fix: drop useSearchParams to unblock static build)
         <ProductGrid products={filtered} emptyState="No pieces match your search just yet." />
       </Container>
     </div>

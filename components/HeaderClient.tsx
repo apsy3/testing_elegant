@@ -1,7 +1,11 @@
 'use client';
 
 import Link from 'next/link';
+<<<<<<< HEAD
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
+=======
+import { useRouter, usePathname } from 'next/navigation';
+>>>>>>> 9f14315 (fix: drop useSearchParams to unblock static build)
 import { useEffect, useMemo, useState } from 'react';
 import { ShoppingBagIcon } from '@heroicons/react/24/outline';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
@@ -18,23 +22,31 @@ const links = [
 export default function Header() {
   const router = useRouter();
   const pathname = usePathname();
+<<<<<<< HEAD
   const searchParams = useSearchParams();
   const [search, setSearch] = useState(searchParams?.get('q') ?? '');
+=======
+  const [search, setSearch] = useState('');
+>>>>>>> 9f14315 (fix: drop useSearchParams to unblock static build)
   const count = useCartStore(selectCartCount);
   const openCart = useCartStore((state) => state.openCart);
   const isOpen = useCartStore((state) => state.isOpen);
   const closeCart = useCartStore((state) => state.closeCart);
 
   useEffect(() => {
+<<<<<<< HEAD
     setSearch(searchParams?.get('q') ?? '');
   }, [searchParams]);
 
   useEffect(() => {
+=======
+>>>>>>> 9f14315 (fix: drop useSearchParams to unblock static build)
     closeCart();
   }, [pathname, closeCart]);
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+<<<<<<< HEAD
     const params = new URLSearchParams(searchParams?.toString() ?? '');
     if (search) {
       params.set('q', search);
@@ -42,6 +54,15 @@ export default function Header() {
       params.delete('q');
     }
     router.push(`/catalog?${params.toString()}`);
+=======
+    const params = new URLSearchParams();
+    const trimmed = search.trim();
+    if (trimmed) {
+      params.set('q', trimmed);
+    }
+    const queryString = params.toString();
+    router.push(`/catalog${queryString ? `?${queryString}` : ''}`);
+>>>>>>> 9f14315 (fix: drop useSearchParams to unblock static build)
   };
 
   const activeLink = useMemo(() => pathname?.split('?')[0], [pathname]);

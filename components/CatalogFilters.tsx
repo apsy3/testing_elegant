@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState, useTransition } from 'react';
-import { useRouter } from 'next/navigation';
+import { useEffect, useMemo, useState, useTransition } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { cn } from '@/lib/utils';
 
 const sortOptions = [
@@ -12,75 +12,65 @@ const sortOptions = [
 
 interface CatalogFiltersProps {
   tags: string[];
-  initialQuery?: string;
-  initialTag?: string;
-  initialSort?: 'newest' | 'price-asc' | 'price-desc';
 }
 
-export default function CatalogFilters({
-  tags,
-  initialQuery = '',
-  initialTag = '',
-  initialSort = 'newest'
-}: CatalogFiltersProps) {
+export default function CatalogFilters({ tags }: CatalogFiltersProps) {
   const router = useRouter();
-  const [query, setQuery] = useState(initialQuery);
-  const [selectedTag, setSelectedTag] = useState(initialTag);
-  const [sort, setSort] = useState<'newest' | 'price-asc' | 'price-desc'>(initialSort);
+  const searchParams = useSearchParams();
+  const [query, setQuery] = useState(searchParams.get('q') ?? '');
   const [isPending, startTransition] = useTransition();
-  const lastSyncedParams = useRef({ query: initialQuery, tag: initialTag, sort: initialSort });
 
   useEffect(() => {
-    setQuery(initialQuery);
-    setSelectedTag(initialTag);
-    setSort(initialSort);
-    lastSyncedParams.current = { query: initialQuery, tag: initialTag, sort: initialSort };
-  }, [initialQuery, initialTag, initialSort]);
+    setQuery(searchParams.get('q') ?? '');
+  }, [searchParams]);
 
-  const applyParams = (nextQuery: string, nextTag: string, nextSort: 'newest' | 'price-asc' | 'price-desc') => {
-    const params = new URLSearchParams();
-    if (nextQuery) {
-      params.set('q', nextQuery);
-    }
-    if (nextTag) {
-      params.set('tag', nextTag);
-    }
-    if (nextSort !== 'newest') {
-      params.set('sort', nextSort);
-    }
-
-    const queryString = params.toString();
+  const applyParams = (next: URLSearchParams) => {
+    const queryString = next.toString();
     startTransition(() => {
       router.push(`/catalog${queryString ? `?${queryString}` : ''}`);
     });
   };
 
   useEffect(() => {
-    if (
-      query === lastSyncedParams.current.query &&
-      selectedTag === lastSyncedParams.current.tag &&
-      sort === lastSyncedParams.current.sort
-    ) {
-      return;
-    }
-
     const handler = setTimeout(() => {
-      lastSyncedParams.current = { query, tag: selectedTag, sort };
-      applyParams(query, selectedTag, sort);
+      const next = new URLSearchParams(searchParams.toString());
+      if (query) {
+        next.set('q', query);
+      } else {
+        next.delete('q');
+      }
+      if (next.toString() !== searchParams.toString()) {
+        applyParams(next);
+      }
     }, 250);
 
     return () => clearTimeout(handler);
-  }, [query, selectedTag, sort]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query]);
+
+  const activeTag = searchParams.get('tag') ?? '';
+  const activeSort = searchParams.get('sort') ?? 'newest';
 
   const sortedTags = useMemo(() => [...tags].sort((a, b) => a.localeCompare(b)), [tags]);
 
   const handleTagClick = (tag: string) => {
-    setSelectedTag((current) => (current === tag ? '' : tag));
+    const next = new URLSearchParams(searchParams.toString());
+    if (activeTag === tag) {
+      next.delete('tag');
+    } else {
+      next.set('tag', tag);
+    }
+    applyParams(next);
   };
 
   const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const nextSort = event.target.value as 'newest' | 'price-asc' | 'price-desc';
-    setSort(nextSort);
+    const next = new URLSearchParams(searchParams.toString());
+    if (event.target.value === 'newest') {
+      next.delete('sort');
+    } else {
+      next.set('sort', event.target.value);
+    }
+    applyParams(next);
   };
 
   return (
@@ -96,14 +86,14 @@ export default function CatalogFilters({
             aria-label="Search catalog"
           />
         </label>
-          <label className="flex items-center gap-3 text-sm text-charcoal/70">
-            <span>Sort by</span>
-            <select
-              className="rounded-full border border-charcoal/10 bg-white px-4 py-2 text-sm focus:border-gold focus:outline-none"
-              onChange={handleSortChange}
-              value={sort}
-              aria-label="Sort products"
-            >
+        <label className="flex items-center gap-3 text-sm text-charcoal/70">
+          <span>Sort by</span>
+          <select
+            className="rounded-full border border-charcoal/10 bg-white px-4 py-2 text-sm focus:border-gold focus:outline-none"
+            onChange={handleSortChange}
+            value={activeSort}
+            aria-label="Sort products"
+          >
             {sortOptions.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
@@ -118,7 +108,7 @@ export default function CatalogFilters({
           onClick={() => handleTagClick('')}
           className={cn(
             'rounded-full border px-4 py-2 text-xs uppercase tracking-widest transition-colors',
-            selectedTag === ''
+            activeTag === ''
               ? 'border-gold bg-gold text-white'
               : 'border-charcoal/10 bg-white text-charcoal hover:border-gold hover:text-gold'
           )}
@@ -132,7 +122,7 @@ export default function CatalogFilters({
             onClick={() => handleTagClick(tag)}
             className={cn(
               'rounded-full border px-4 py-2 text-xs uppercase tracking-widest transition-colors',
-              selectedTag === tag
+              activeTag === tag
                 ? 'border-gold bg-gold text-white'
                 : 'border-charcoal/10 bg-white text-charcoal hover:border-gold hover:text-gold'
             )}

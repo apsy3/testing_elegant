@@ -1,33 +1,39 @@
-import type { Metadata } from 'next';
-import { Suspense } from 'react';
-import { Inter, Fraunces } from 'next/font/google';
-import clsx from 'clsx';
-import './globals.css';
-import { metadata as defaultMetadata } from '@/lib/seo';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+import './globals.css'
+import type { Metadata, Viewport } from 'next'
+import { Suspense } from 'react'
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
-const fraunces = Fraunces({ subsets: ['latin'], variable: '--font-fraunces' });
+// Make all pages dynamic for TESTING (skip prerender traps)
+export const dynamic = 'force-dynamic'
 
-export const metadata: Metadata = defaultMetadata;
+// Keep metadata simple — DO NOT put themeColor here
+export const metadata: Metadata = {
+  title: { default: 'Your Brand', template: '%s | Your Brand' },
+  description: 'Modern luxury storefront (test build).',
+}
 
-export const dynamic = 'force-dynamic';
+// themeColor belongs in viewport (not metadata)
+export const viewport: Viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+    { media: '(prefers-color-scheme: dark)', color: '#0b0b0b' },
+  ],
+}
 
-export default function RootLayout({
-  children
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={clsx(inter.variable, fraunces.variable)}>
-      <body className="bg-white text-charcoal font-sans">
-        <Suspense fallback={<div className="h-20" aria-hidden="true" />}> 
+    <html lang="en">
+      <body>
+        {/* Any client component that might use useSearchParams MUST be inside Suspense */}
+        <Suspense fallback={null}>
           <Header />
         </Suspense>
-        <main className="min-h-screen pt-24">{children}</main>
+        <Suspense fallback={null}>
+          {children}
+        </Suspense>
         <Footer />
       </body>
     </html>
-  );
+  )
 }

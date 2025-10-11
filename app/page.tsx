@@ -4,9 +4,8 @@ import Container from '@/components/Container';
 import ProductGrid from '@/components/ProductGrid';
 import { Button } from '@/components/Button';
 import { listProducts, productsByCollection } from '@/lib/shopify';
-import { HERO_IMAGE_URL } from '@/lib/config';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 export default async function HomePage() {
   const [products, collectionProducts] = await Promise.all([
@@ -55,13 +54,12 @@ export default async function HomePage() {
           </div>
           <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[3rem] shadow-soft">
             <Image
-              src={HERO_IMAGE_URL}
+              src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=1200&q=80"
               alt="Model wearing handcrafted attire"
               fill
               className="object-cover"
               sizes="(max-width: 768px) 100vw, 50vw"
               priority
-              unoptimized
             />
           </div>
         </Container>

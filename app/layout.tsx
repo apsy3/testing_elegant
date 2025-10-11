@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { Suspense } from 'react';
 import { Inter, Fraunces } from 'next/font/google';
 import clsx from 'clsx';
 import './globals.css';
@@ -12,6 +11,10 @@ const fraunces = Fraunces({ subsets: ['latin'], variable: '--font-fraunces' });
 
 export const metadata: Metadata = defaultMetadata;
 
+export const viewport = {
+  themeColor: '#ffffff'
+};
+
 export const dynamic = 'force-dynamic';
 
 export default function RootLayout({
@@ -22,9 +25,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={clsx(inter.variable, fraunces.variable)}>
       <body className="bg-white text-charcoal font-sans">
-        <Suspense fallback={<div className="h-20" aria-hidden="true" />}> 
-          <Header />
-        </Suspense>
+        <Header />
         <main className="min-h-screen pt-24">{children}</main>
         <Footer />
       </body>

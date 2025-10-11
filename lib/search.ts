@@ -101,11 +101,11 @@ const matchesQuery = (product: NormalizedProduct, query?: string) => {
   return product.normalizedText.includes(cleaned);
 };
 
-export function applyFilters(
+export const applyFilters = (
   products: NormalizedProduct[],
   { query, sort = 'newest', filters = {} }: SearchOptions,
   filterKeys: Array<FilterKey | 'price'>
-): NormalizedProduct[] {
+): NormalizedProduct[] => {
   const filtered = products.filter((product) => {
     if (!matchesQuery(product, query)) {
       return false;
@@ -122,13 +122,13 @@ export function applyFilters(
   return filtered.sort(
     (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
   );
-}
+};
 
-export function buildFilterGroups(
+export const buildFilterGroups = (
   products: NormalizedProduct[],
   filterKeys: Array<FilterKey | 'price'>,
   activeFilters: ActiveFilters = {}
-): FilterGroup[] {
+): FilterGroup[] => {
   return filterKeys.map((key) => {
     const optionsWithCounts: Record<string, number> = {};
     products.forEach((product) => {
@@ -159,12 +159,12 @@ export function buildFilterGroups(
       options: unique([...selectedOptions, ...options])
     };
   });
-}
+};
 
-export function parseFiltersFromSearchParams(
+export const parseFiltersFromSearchParams = (
   searchParams: Record<string, string | string[] | undefined>,
   filterKeys: Array<FilterKey | 'price'>
-): ActiveFilters {
+): ActiveFilters => {
   const active: ActiveFilters = {};
   filterKeys.forEach((key) => {
     const raw = searchParams[key];
@@ -173,18 +173,16 @@ export function parseFiltersFromSearchParams(
     active[key] = values.filter(Boolean);
   });
   return active;
-}
+};
 
-export function parseSort(value?: string): SortOption {
+export const parseSort = (value?: string): SortOption => {
   if (value === 'price-asc' || value === 'price-desc') {
     return value;
   }
   return 'newest';
-}
+};
 
-export function parseQuery(value?: string) {
-  return value ?? '';
-}
+export const parseQuery = (value?: string) => value ?? '';
 
 export const serializeFilters = (filters: ActiveFilters): URLSearchParams => {
   const params = new URLSearchParams();

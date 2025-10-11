@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import Container from '@/components/Container';
 import ProductGrid from '@/components/ProductGrid';
@@ -8,12 +7,6 @@ import Price from '@/components/Price';
 import { getProductByHandle, listProducts } from '@/lib/shopify';
 import type { Metadata } from 'next';
 import { SITE_CONFIG } from '@/lib/config';
-import {
-  breadcrumbsForSlug,
-  listCatalogDefinitions,
-  normalizeProducts,
-  type CatalogDefinition
-} from '@/lib/taxonomy';
 
 export const dynamic = 'force-dynamic';
 
@@ -51,23 +44,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
   }
 
   const allProducts = await listProducts();
-  const normalized = normalizeProducts(allProducts);
-  const normalizedProduct = normalized.find((p) => p.handle === product.handle);
-
-  const matchedDefinitions = normalizedProduct
-    ? listCatalogDefinitions()
-        .filter((definition) => definition.rule(normalizedProduct))
-        .sort((a, b) => b.slug.length - a.slug.length)
-    : [];
-
-  const primaryDefinition: CatalogDefinition | undefined = matchedDefinitions[0];
-  const breadcrumbs = primaryDefinition ? breadcrumbsForSlug(primaryDefinition.slug) : [];
-
-  const related = primaryDefinition
-    ? normalized
-        .filter((candidate) => candidate.handle !== product.handle && primaryDefinition.rule(candidate))
-        .slice(0, 4)
-    : normalized.filter((candidate) => candidate.handle !== product.handle).slice(0, 4);
+  const related = allProducts
+    .filter((p) => p.handle !== product.handle)
+    .filter((p) => product.tags.some((tag) => p.tags.includes(tag)))
+    .slice(0, 4);
 
   const descriptionParagraphs = product.description.split(/\n{2,}/).filter(Boolean);
   const materialsLine = product.description
@@ -77,33 +57,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   return (
     <div className="pb-24">
-      <Container className="space-y-10 py-12">
-        <nav aria-label="Breadcrumb" className="text-xs uppercase tracking-[0.3em] text-charcoal/50">
-          <ol className="flex flex-wrap gap-2">
-            <li>
-              <Link href="/" className="hover:text-gold" prefetch>
-                Home
-              </Link>
-            </li>
-            {breadcrumbs.map((crumb) => (
-              <li key={crumb.href} className="flex items-center gap-2">
-                <span>·</span>
-                <Link href={crumb.href} className="hover:text-gold" prefetch>
-                  {crumb.label}
-                </Link>
-              </li>
-            ))}
-            <li className="flex items-center gap-2">
-              <span>·</span>
-              <span>{product.title}</span>
-            </li>
-          </ol>
-        </nav>
-
-        <div className="grid gap-12 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]">
-          <div className="grid gap-4">
-            <div className="relative aspect-[3/4] overflow-hidden rounded-[3rem] bg-fog">
-              {product.featuredImage ? (
+      <Container className="grid gap-12 py-12 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]">
+        <div className="grid gap-4">
+          <div className="relative aspect-[3/4] overflow-hidden rounded-[3rem] bg-fog">
+            {product.featuredImage ? (
               <Image
                 src={product.featuredImage}
                 alt={product.title}
@@ -125,9 +82,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
               </div>
             ))}
           </div>
-          </div>
-          <div className="space-y-8">
-            <div className="space-y-3">
+        </div>
+        <div className="space-y-8">
+          <div className="space-y-3">
             <p className="text-xs uppercase tracking-[0.4em] text-charcoal/50">{SITE_CONFIG.name}</p>
             <h1 className="font-display text-4xl text-charcoal">{product.title}</h1>
             <Price amount={product.priceRange.min} currencyCode={product.priceRange.currencyCode} />
@@ -148,7 +105,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </div>
           )}
           <AddToCartButton product={product} />
-        </div>
         </div>
       </Container>
 

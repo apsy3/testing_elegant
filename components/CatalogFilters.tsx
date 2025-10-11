@@ -1,103 +1,90 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState, useTransition } from 'react';
-import { useRouter, usePathname } from 'next/navigation';
-import { FunnelIcon } from '@heroicons/react/24/outline';
-import type { FilterGroup, ActiveFilters, SortOption } from '@/lib/search';
-import { serializeFilters } from '@/lib/search';
+import { useRouter } from 'next/navigation';
+import { cn } from '@/lib/utils';
 
-const sortOptions: Array<{ value: SortOption; label: string }> = [
+const sortOptions = [
   { value: 'newest', label: 'Newest' },
   { value: 'price-asc', label: 'Price: Low to High' },
   { value: 'price-desc', label: 'Price: High to Low' }
 ];
 
 interface CatalogFiltersProps {
-  groups: FilterGroup[];
+  tags: string[];
   initialQuery?: string;
-  initialSort?: SortOption;
-  activeFilters: ActiveFilters;
+  initialTag?: string;
+  initialSort?: 'newest' | 'price-asc' | 'price-desc';
 }
 
 export default function CatalogFilters({
-  groups,
+  tags,
   initialQuery = '',
-  initialSort = 'newest',
-  activeFilters
+  initialTag = '',
+  initialSort = 'newest'
 }: CatalogFiltersProps) {
   const router = useRouter();
-  const pathname = usePathname();
   const [query, setQuery] = useState(initialQuery);
-  const [sort, setSort] = useState<SortOption>(initialSort);
-  const [selectedFilters, setSelectedFilters] = useState<ActiveFilters>(activeFilters);
-  const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({});
+  const [selectedTag, setSelectedTag] = useState(initialTag);
+  const [sort, setSort] = useState<'newest' | 'price-asc' | 'price-desc'>(initialSort);
   const [isPending, startTransition] = useTransition();
-  const lastSync = useRef({ query: initialQuery, sort: initialSort, filters: activeFilters });
+  const lastSyncedParams = useRef({ query: initialQuery, tag: initialTag, sort: initialSort });
 
   useEffect(() => {
     setQuery(initialQuery);
+    setSelectedTag(initialTag);
     setSort(initialSort);
-    setSelectedFilters(activeFilters);
-    lastSync.current = { query: initialQuery, sort: initialSort, filters: activeFilters };
-  }, [initialQuery, initialSort, activeFilters]);
+    lastSyncedParams.current = { query: initialQuery, tag: initialTag, sort: initialSort };
+  }, [initialQuery, initialTag, initialSort]);
 
-  const toggleFilter = (key: string, value: string) => {
-    setSelectedFilters((current) => {
-      const values = new Set(current[key] ?? []);
-      if (values.has(value)) {
-        values.delete(value);
-      } else {
-        values.add(value);
-      }
-      return {
-        ...current,
-        [key]: Array.from(values)
-      };
+  const applyParams = (nextQuery: string, nextTag: string, nextSort: 'newest' | 'price-asc' | 'price-desc') => {
+    const params = new URLSearchParams();
+    if (nextQuery) {
+      params.set('q', nextQuery);
+    }
+    if (nextTag) {
+      params.set('tag', nextTag);
+    }
+    if (nextSort !== 'newest') {
+      params.set('sort', nextSort);
+    }
+
+    const queryString = params.toString();
+    startTransition(() => {
+      router.push(`/catalog${queryString ? `?${queryString}` : ''}`);
     });
   };
 
-  const clearFilters = () => {
-    setSelectedFilters({});
-  };
-
-  const buildSearchParams = () => {
-    const params = serializeFilters(selectedFilters);
-    if (query.trim()) {
-      params.set('q', query.trim());
-    }
-    if (sort !== 'newest') {
-      params.set('sort', sort);
-    }
-    return params;
-  };
-
   useEffect(() => {
-    const { query: lastQuery, sort: lastSort, filters: lastFilters } = lastSync.current;
-    const sameQuery = lastQuery === query;
-    const sameSort = lastSort === sort;
-    const sameFilters = JSON.stringify(lastFilters) === JSON.stringify(selectedFilters);
-    if (sameQuery && sameSort && sameFilters) {
+    if (
+      query === lastSyncedParams.current.query &&
+      selectedTag === lastSyncedParams.current.tag &&
+      sort === lastSyncedParams.current.sort
+    ) {
       return;
     }
+
     const handler = setTimeout(() => {
-      lastSync.current = { query, sort, filters: selectedFilters };
-      const params = buildSearchParams();
-      const queryString = params.toString();
-      startTransition(() => {
-        router.replace(`${pathname}${queryString ? `?${queryString}` : ''}`);
-      });
-    }, 200);
+      lastSyncedParams.current = { query, tag: selectedTag, sort };
+      applyParams(query, selectedTag, sort);
+    }, 250);
 
     return () => clearTimeout(handler);
-  }, [query, sort, selectedFilters, pathname, router]);
+  }, [query, selectedTag, sort]);
 
-  const isFiltering = useMemo(
-    () => Object.values(selectedFilters).some((values) => values && values.length > 0),
-    [selectedFilters]
-  );
+  const sortedTags = useMemo(() => [...tags].sort((a, b) => a.localeCompare(b)), [tags]);
+
+  const handleTagClick = (tag: string) => {
+    setSelectedTag((current) => (current === tag ? '' : tag));
+  };
+
+  const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const nextSort = event.target.value as 'newest' | 'price-asc' | 'price-desc';
+    setSort(nextSort);
+  };
 
   return (
-    <aside className="space-y-6 rounded-3xl border border-charcoal/10 bg-white/80 p-6 shadow-soft">
+    <div className="space-y-6 rounded-3xl border border-charcoal/10 bg-white/80 p-6 shadow-soft">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <label className="flex flex-1 items-center gap-3 rounded-full border border-charcoal/10 bg-white px-4 py-2 text-sm shadow-sm focus-within:border-gold focus-within:ring-1 focus-within:ring-gold">
           <span className="text-charcoal/40">Search</span>
@@ -105,18 +92,18 @@ export default function CatalogFilters({
             className="flex-1 bg-transparent text-charcoal placeholder:text-charcoal/40 focus:outline-none"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="Leather tote, kundan choker…"
-            aria-label="Search within collection"
+            placeholder="Embroidery, sari, jewellery…"
+            aria-label="Search catalog"
           />
         </label>
-        <label className="flex items-center gap-3 text-sm text-charcoal/70">
-          <span>Sort</span>
-          <select
-            className="rounded-full border border-charcoal/10 bg-white px-4 py-2 text-sm focus:border-gold focus:outline-none"
-            onChange={(event) => setSort(event.target.value as SortOption)}
-            value={sort}
-            aria-label="Sort products"
-          >
+          <label className="flex items-center gap-3 text-sm text-charcoal/70">
+            <span>Sort by</span>
+            <select
+              className="rounded-full border border-charcoal/10 bg-white px-4 py-2 text-sm focus:border-gold focus:outline-none"
+              onChange={handleSortChange}
+              value={sort}
+              aria-label="Sort products"
+            >
             {sortOptions.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
@@ -125,75 +112,36 @@ export default function CatalogFilters({
           </select>
         </label>
       </div>
-
-      <div className="flex items-center justify-between text-xs uppercase tracking-[0.3em] text-charcoal/50">
-        <div className="inline-flex items-center gap-2">
-          <FunnelIcon className="h-4 w-4" aria-hidden /> Filters
-        </div>
+      <div className="flex flex-wrap gap-2">
         <button
           type="button"
-          className="text-charcoal/60 transition hover:text-gold"
-          onClick={clearFilters}
-          disabled={!isFiltering}
+          onClick={() => handleTagClick('')}
+          className={cn(
+            'rounded-full border px-4 py-2 text-xs uppercase tracking-widest transition-colors',
+            selectedTag === ''
+              ? 'border-gold bg-gold text-white'
+              : 'border-charcoal/10 bg-white text-charcoal hover:border-gold hover:text-gold'
+          )}
         >
-          Clear
+          All
         </button>
+        {sortedTags.map((tag) => (
+          <button
+            key={tag}
+            type="button"
+            onClick={() => handleTagClick(tag)}
+            className={cn(
+              'rounded-full border px-4 py-2 text-xs uppercase tracking-widest transition-colors',
+              selectedTag === tag
+                ? 'border-gold bg-gold text-white'
+                : 'border-charcoal/10 bg-white text-charcoal hover:border-gold hover:text-gold'
+            )}
+          >
+            {tag}
+          </button>
+        ))}
       </div>
-
-      <div className="grid gap-4 md:grid-cols-2">
-        {groups.map((group) => {
-          const expanded = expandedGroups[group.key] ?? true;
-          const selected = selectedFilters[group.key] ?? [];
-          return (
-            <div key={group.key} className="rounded-2xl border border-charcoal/10 bg-white/90 p-4">
-              <button
-                type="button"
-                className="flex w-full items-center justify-between text-left text-sm font-medium text-charcoal"
-                onClick={() =>
-                  setExpandedGroups((current) => ({
-                    ...current,
-                    [group.key]: !expanded
-                  }))
-                }
-                aria-expanded={expanded}
-              >
-                <span>{group.label}</span>
-                <span className="text-xs uppercase tracking-widest text-charcoal/40">
-                  {selected.length ? `${selected.length} selected` : 'All'}
-                </span>
-              </button>
-              {expanded && (
-                <ul className="mt-3 space-y-2 text-sm text-charcoal/80">
-                  {group.options.map((option) => {
-                    const isChecked = selected.includes(option.value);
-                    return (
-                      <li key={option.value}>
-                        <label className="flex items-center justify-between gap-4">
-                          <span className="flex items-center gap-2">
-                            <input
-                              type="checkbox"
-                              className="h-4 w-4 rounded border-charcoal/20 text-gold focus:ring-gold"
-                              checked={isChecked}
-                              onChange={() => toggleFilter(group.key, option.value)}
-                              aria-label={`${group.label} ${option.label}`}
-                            />
-                            <span>{option.label}</span>
-                          </span>
-                          <span className="text-xs text-charcoal/40">{option.count}</span>
-                        </label>
-                      </li>
-                    );
-                  })}
-                </ul>
-              )}
-            </div>
-          );
-        })}
-      </div>
-
-      {isPending && (
-        <p className="text-xs uppercase tracking-[0.3em] text-charcoal/40">Updating…</p>
-      )}
-    </aside>
+      {isPending && <p className="text-xs uppercase tracking-widest text-charcoal/40">Updating…</p>}
+    </div>
   );
 }

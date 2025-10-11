@@ -4,6 +4,7 @@ import CatalogFilters from '@/components/CatalogFilters';
 import { listProducts } from '@/lib/shopify';
 import { searchProducts } from '@/lib/search';
 
+export const revalidate = 60;
 export const dynamic = 'force-dynamic';
 
 type CatalogPageProps = {

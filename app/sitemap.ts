@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
 import type { MetadataRoute } from 'next';
 import { listProducts } from '@/lib/shopify';
 import { allCollectionSlugs } from '@/lib/catalog';
@@ -26,6 +29,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...collectionEntries,
     ...productEntries
   ];
+<<<<<<< HEAD
 =======
 // app/sitemap.ts
 import type { MetadataRoute } from 'next'
@@ -64,4 +68,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [...staticRoutes, ...productRoutes]
 >>>>>>> origin/main
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
 }

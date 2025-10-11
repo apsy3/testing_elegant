@@ -1,10 +1,15 @@
 import type { ShopifyProduct } from './shopify';
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { getCatalogDefinition, normalizeProducts } from './catalog';
 import type { NormalizedProduct } from './catalog';
 =======
 import { getCatalogDefinition, normalizeProducts } from './taxonomy';
 >>>>>>> origin/main
+=======
+import { getCatalogDefinition, normalizeProducts } from './catalog';
+import type { NormalizedProduct } from './catalog';
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
 
 export interface NavLeaf {
   title: string;
@@ -199,16 +204,22 @@ const countForSlug = (products: NormalizedProduct[], slug?: string[]) => {
 };
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
 export const buildNavigation = (products: ShopifyProduct[]): NavItem[] => {
   if (!products || products.length === 0) {
     return BASE_NAVIGATION;
   }
 
+<<<<<<< HEAD
 =======
 type NormalizedProduct = ReturnType<typeof normalizeProducts>[number];
 
 export const buildNavigation = (products: ShopifyProduct[]): NavItem[] => {
 >>>>>>> origin/main
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
   const normalized = normalizeProducts(products);
 
   return BASE_NAVIGATION.map((item) => {

@@ -1,14 +1,20 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
 import { Suspense } from 'react';
 import Container from '@/components/Container';
 import CartPageClient from '@/components/CartPageClient';
 import Skeleton from '@/components/Skeleton';
 
 export const dynamic = 'force-dynamic';
+<<<<<<< HEAD
 =======
 import Container from '@/components/Container';
 import CartPageClient from '@/components/CartPageClient';
 >>>>>>> origin/main
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
 
 export default function CartPage() {
   return (
@@ -19,17 +25,26 @@ export default function CartPage() {
           <h1 className="mt-4 font-display text-4xl text-charcoal">Cart</h1>
         </div>
 <<<<<<< HEAD
+<<<<<<< HEAD
         <Suspense fallback={<CartFallback />}> 
           <CartPageClient />
         </Suspense>
 =======
         <CartPageClient />
 >>>>>>> origin/main
+=======
+        <Suspense fallback={<CartFallback />}> 
+          <CartPageClient />
+        </Suspense>
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
       </Container>
     </div>
   );
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
 
 function CartFallback() {
   return (
@@ -39,5 +54,8 @@ function CartFallback() {
     </div>
   );
 }
+<<<<<<< HEAD
 =======
 >>>>>>> origin/main
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)

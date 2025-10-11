@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
 import type { Metadata } from 'next';
 import { Inter, Fraunces } from 'next/font/google';
 import clsx from 'clsx';
@@ -33,6 +36,7 @@ export default async function RootLayout({
       </body>
     </html>
   );
+<<<<<<< HEAD
 =======
 import './globals.css'
 import type { Metadata, Viewport } from 'next'
@@ -73,4 +77,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   )
 >>>>>>> origin/main
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
 }

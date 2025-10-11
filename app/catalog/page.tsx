@@ -1,8 +1,12 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
 import { redirect } from 'next/navigation';
 
 export default function LegacyCatalogRedirect() {
   redirect('/search');
+<<<<<<< HEAD
 =======
 import Container from '@/components/Container';
 import ProductGrid from '@/components/ProductGrid';
@@ -46,4 +50,6 @@ export default async function CatalogPage({ searchParams }: CatalogPageProps) {
     </div>
   );
 >>>>>>> origin/main
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
 }

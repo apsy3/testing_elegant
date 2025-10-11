@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
 export type SortKey = 'relevance' | 'new' | 'price';
 export type SortDir = 'asc' | 'desc';
 export interface SortSpec {
@@ -109,6 +112,7 @@ export function buildFilterGroups<T extends { tags?: string[] }>(
       const [key, value] = tag.split(':');
       if (!value) continue;
       tally[key] ??= {};
+<<<<<<< HEAD
 =======
 // lib/search.ts
 import type { ShopifyProduct } from './shopify';
@@ -240,6 +244,8 @@ export function buildFilterGroups(
       if (!value) continue;
       (tally[key] ||= {});
 >>>>>>> origin/main
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
       tally[key][value] = (tally[key][value] || 0) + 1;
     }
   }
@@ -248,9 +254,13 @@ export function buildFilterGroups(
     options: Object.entries(map)
       .map(([value, count]) => ({ value, count }))
 <<<<<<< HEAD
+<<<<<<< HEAD
       .sort((a, b) => a.value.localeCompare(b.value))
 =======
       .sort((a, b) => a.value.localeCompare(b.value)),
 >>>>>>> origin/main
+=======
+      .sort((a, b) => a.value.localeCompare(b.value))
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
   }));
 }

@@ -1,6 +1,9 @@
 'use client';
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
 import { useEffect, useMemo, useRef, useState, useTransition } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { FunnelIcon } from '@heroicons/react/24/outline';
@@ -135,6 +138,7 @@ export default function CatalogFilters({
 
   return (
     <aside className="space-y-6 rounded-3xl border border-charcoal/10 bg-white/80 p-6 shadow-soft">
+<<<<<<< HEAD
 =======
 import { useEffect, useMemo, useState, useTransition } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -212,6 +216,8 @@ export default function CatalogFilters({ tags }: CatalogFiltersProps) {
   return (
     <div className="space-y-6 rounded-3xl border border-charcoal/10 bg-white/80 p-6 shadow-soft">
 >>>>>>> origin/main
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <label className="flex flex-1 items-center gap-3 rounded-full border border-charcoal/10 bg-white px-4 py-2 text-sm shadow-sm focus-within:border-gold focus-within:ring-1 focus-within:ring-gold">
           <span className="text-charcoal/40">Search</span>
@@ -220,6 +226,9 @@ export default function CatalogFilters({ tags }: CatalogFiltersProps) {
             value={query}
             onChange={(event) => setQuery(event.target.value)}
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
             placeholder="Leather tote, kundan choker…"
             aria-label="Search within collection"
           />
@@ -233,6 +242,7 @@ export default function CatalogFilters({ tags }: CatalogFiltersProps) {
             aria-label="Sort products"
           >
             {SORT_OPTIONS.map((option) => (
+<<<<<<< HEAD
 =======
             placeholder="Embroidery, sari, jewellery…"
             aria-label="Search catalog"
@@ -248,6 +258,8 @@ export default function CatalogFilters({ tags }: CatalogFiltersProps) {
           >
             {sortOptions.map((option) => (
 >>>>>>> origin/main
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
               <option key={option.value} value={option.value}>
                 {option.label}
               </option>
@@ -256,6 +268,9 @@ export default function CatalogFilters({ tags }: CatalogFiltersProps) {
         </label>
       </div>
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
 
       <div className="flex items-center justify-between text-xs uppercase tracking-[0.3em] text-charcoal/50">
         <div className="inline-flex items-center gap-2">
@@ -326,6 +341,7 @@ export default function CatalogFilters({ tags }: CatalogFiltersProps) {
         <p className="text-xs uppercase tracking-[0.3em] text-charcoal/40">Updating…</p>
       )}
     </aside>
+<<<<<<< HEAD
 =======
       <div className="flex flex-wrap gap-2">
         <button
@@ -359,5 +375,7 @@ export default function CatalogFilters({ tags }: CatalogFiltersProps) {
       {isPending && <p className="text-xs uppercase tracking-widest text-charcoal/40">Updating…</p>}
     </div>
 >>>>>>> origin/main
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
   );
 }

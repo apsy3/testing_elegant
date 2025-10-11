@@ -11,6 +11,9 @@ import {
   type CatalogDefinition,
   type FilterKey
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
 } from '@/lib/catalog';
 import {
   applyFilters,
@@ -25,6 +28,7 @@ import {
   filterAllowedKeys,
   toURLSearchParams
 } from '@/lib/search-helpers';
+<<<<<<< HEAD
 =======
 } from '@/lib/taxonomy';
 import {
@@ -35,6 +39,8 @@ import {
   parseSort
 } from '@/lib/search';
 >>>>>>> origin/main
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
 
 export const dynamic = 'force-dynamic';
 
@@ -80,6 +86,9 @@ export default async function CollectionPage({ params, searchParams }: Collectio
   const { definition, items } = result as { definition: CatalogDefinition; items: NormalizedProduct[] };
   const filterKeys = uniqueFilterKeys(definition);
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
   const urlSearchParams = toURLSearchParams(searchParams);
   const rawFilters = parseFiltersFromSearchParams(urlSearchParams);
   const filters = filterAllowedKeys(rawFilters, filterKeys);
@@ -96,6 +105,7 @@ export default async function CollectionPage({ params, searchParams }: Collectio
     .map((item) => productMap.get(String(item.id)))
     .filter((product): product is NormalizedProduct => Boolean(product));
   const groups = buildFilterGroupDisplay(searchableItems, filterKeys);
+<<<<<<< HEAD
 =======
   const activeFilters = parseFiltersFromSearchParams(searchParams, filterKeys);
   const queryValue = typeof searchParams.q === 'string'
@@ -110,6 +120,8 @@ export default async function CollectionPage({ params, searchParams }: Collectio
     (group) => group.options.length > 0
   );
 >>>>>>> origin/main
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
   const breadcrumbs = breadcrumbsForSlug(definition.slug);
 
   return (
@@ -141,11 +153,15 @@ export default async function CollectionPage({ params, searchParams }: Collectio
           initialQuery={query}
           initialSort={sort}
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
           activeFilters={filters}
         />
 
         <ProductGrid
           products={filteredProducts}
+<<<<<<< HEAD
 =======
           activeFilters={activeFilters}
         />
@@ -153,6 +169,8 @@ export default async function CollectionPage({ params, searchParams }: Collectio
         <ProductGrid
           products={filtered}
 >>>>>>> origin/main
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
           emptyState="No pieces match your filters yet. Adjust the facets to continue exploring."
         />
       </Container>

@@ -3,6 +3,9 @@ import CatalogFilters from '@/components/CatalogFilters';
 import ProductGrid from '@/components/ProductGrid';
 import { listProducts } from '@/lib/shopify';
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
 import { normalizeProducts, type FilterKey } from '@/lib/catalog';
 import {
   applyFilters,
@@ -17,6 +20,7 @@ import {
   filterAllowedKeys,
   toURLSearchParams
 } from '@/lib/search-helpers';
+<<<<<<< HEAD
 =======
 import { normalizeProducts, type FilterKey } from '@/lib/taxonomy';
 import {
@@ -27,6 +31,8 @@ import {
   parseSort
 } from '@/lib/search';
 >>>>>>> origin/main
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
 
 export const dynamic = 'force-dynamic';
 
@@ -40,6 +46,9 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   const products = await listProducts();
   const normalized = normalizeProducts(products);
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
   const params = toURLSearchParams(searchParams);
   const rawFilters = parseFiltersFromSearchParams(params);
   const filters = filterAllowedKeys(rawFilters, FILTER_KEYS);
@@ -56,6 +65,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     .map((item) => productMap.get(String(item.id)))
     .filter((product): product is ReturnType<typeof normalizeProducts>[number] => Boolean(product));
   const groups = buildFilterGroupDisplay(searchableItems, FILTER_KEYS);
+<<<<<<< HEAD
 =======
   const filters = parseFiltersFromSearchParams(searchParams, FILTER_KEYS);
   const queryValue = typeof searchParams.q === 'string'
@@ -70,6 +80,8 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     (group) => group.options.length > 0
   );
 >>>>>>> origin/main
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
 
   return (
     <div className="pb-24">
@@ -91,10 +103,14 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
         <ProductGrid
 <<<<<<< HEAD
+<<<<<<< HEAD
           products={filteredProducts}
 =======
           products={filtered}
 >>>>>>> origin/main
+=======
+          products={filteredProducts}
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
           emptyState="No pieces match your query yet. Adjust filters or try another search."
         />
       </Container>

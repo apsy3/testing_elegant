@@ -27,9 +27,13 @@ export const metadata: Metadata = {
   icons: {
     icon: '/icon.svg'
 <<<<<<< HEAD
+<<<<<<< HEAD
   }
 =======
   },
   themeColor: '#ffffff'
 >>>>>>> origin/main
+=======
+  }
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
 };

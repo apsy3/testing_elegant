@@ -3,6 +3,9 @@ import type { ShopifyCollection, ShopifyProduct } from './shopify';
 const sharedDescription = `Each piece is hand-finished by master artisans using heritage techniques passed down through generations. Expect subtle variations that make every item one-of-a-kind.`;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
 const now = new Date();
 
 const daysAgo = (days: number) => new Date(now.getTime() - days * 24 * 60 * 60 * 1000).toISOString();
@@ -35,6 +38,7 @@ export const mockProducts: ShopifyProduct[] = [
     priceRange: {
       min: 34999,
       max: 34999,
+<<<<<<< HEAD
 =======
 export const mockProducts: ShopifyProduct[] = [
   {
@@ -59,11 +63,16 @@ export const mockProducts: ShopifyProduct[] = [
       min: 28999,
       max: 28999,
 >>>>>>> origin/main
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
       currencyCode: 'INR'
     },
     variants: [
       {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
         id: 'gid://shopify/ProductVariant/100',
         title: 'OS',
         price: 34999,
@@ -98,6 +107,7 @@ export const mockProducts: ShopifyProduct[] = [
     priceRange: {
       min: 27999,
       max: 27999,
+<<<<<<< HEAD
 =======
         id: 'gid://shopify/ProductVariant/1',
         title: 'Standard',
@@ -126,11 +136,16 @@ export const mockProducts: ShopifyProduct[] = [
       min: 45999,
       max: 45999,
 >>>>>>> origin/main
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
       currencyCode: 'INR'
     },
     variants: [
       {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
         id: 'gid://shopify/ProductVariant/101',
         title: 'OS',
         price: 27999,
@@ -198,6 +213,7 @@ export const mockProducts: ShopifyProduct[] = [
       'length:hip',
       'new'
     ],
+<<<<<<< HEAD
 =======
         id: 'gid://shopify/ProductVariant/2',
         title: '16 inch',
@@ -215,6 +231,8 @@ export const mockProducts: ShopifyProduct[] = [
     description: `${sharedDescription}\n\nMaterials: Handloom cotton, natural dyes.`,
     tags: ['apparel', 'editorial'],
 >>>>>>> origin/main
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
     featuredImage:
       'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1200&q=80',
     images: [
@@ -235,16 +253,23 @@ export const mockProducts: ShopifyProduct[] = [
     variants: [
       {
 <<<<<<< HEAD
+<<<<<<< HEAD
         id: 'gid://shopify/ProductVariant/103',
 =======
         id: 'gid://shopify/ProductVariant/3',
 >>>>>>> origin/main
+=======
+        id: 'gid://shopify/ProductVariant/103',
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
         title: 'S-M',
         price: 18999,
         availableForSale: true
       }
     ],
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
     createdAt: daysAgo(18),
     updatedAt: daysAgo(4)
   },
@@ -483,10 +508,13 @@ export const mockProducts: ShopifyProduct[] = [
     ],
     createdAt: daysAgo(120),
     updatedAt: daysAgo(7)
+<<<<<<< HEAD
 =======
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString()
 >>>>>>> origin/main
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
   }
 ];
 

@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://heritage-atelier.example';
 
 export function GET(): Response {
@@ -9,6 +12,7 @@ export function GET(): Response {
       'Content-Type': 'text/plain; charset=utf-8',
       'Cache-Control': 'public, s-maxage=86400, max-age=86400'
     }
+<<<<<<< HEAD
 =======
 // app/robots.txt/route.ts
 export function GET() {
@@ -20,5 +24,7 @@ Sitemap: ${siteUrl}/sitemap.xml
   return new Response(body, {
     headers: { 'content-type': 'text/plain; charset=utf-8' },
 >>>>>>> origin/main
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
   });
 }

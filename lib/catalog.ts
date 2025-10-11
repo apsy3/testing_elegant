@@ -54,6 +54,7 @@ export interface CatalogDefinition {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 const CORE_FILTERS: FilterKey[] = ['material', 'color', 'size', 'price', 'occasion'];
 const FAMILY_FILTERS: Record<Family, FilterKey[]> = {
   bags: [...CORE_FILTERS, 'capacity', 'device-fit', 'waterproof', 'wheels'],
@@ -128,6 +129,8 @@ const NORMALISERS: Array<[RegExp, string]> = [
 const BAG_KEYWORDS = {
   travel: ['duffel', 'weekend', 'carry-on', 'carryon', 'cabin', 'trolley', 'wheeled', 'garment', 'flight', 'suitcase'],
 =======
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
 const BAG_KEYWORDS = {
   travel: [
     'duffel',
@@ -141,7 +144,10 @@ const BAG_KEYWORDS = {
     'flight',
     'suitcase'
   ],
+<<<<<<< HEAD
 >>>>>>> origin/main
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
   work: ['briefcase', 'messenger', 'attache', 'attaché', 'laptop', 'portfolio'],
   evening: ['clutch', 'evening', 'wristlet', 'minaudiere', 'minaudière'],
   small: ['mini', 'micro', 'pouch', 'wallet', 'card holder', 'cardholder', 'coin'],
@@ -172,15 +178,20 @@ const ACCESSORY_KEYWORDS = {
 } as const;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 const TEXT_NORMALISERS: Array<[RegExp, string]> = [
 >>>>>>> ea3c549 (refactor: simplify catalog definitions)
 =======
 const TEXT_NORMALIZATIONS: Array<[RegExp, string]> = [
 >>>>>>> origin/main
+=======
+const TEXT_NORMALIZATIONS: Array<[RegExp, string]> = [
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
   [/cross-body/g, 'crossbody'],
   [/carry on/g, 'carry-on']
 ];
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 const THIRTY_DAYS = 30 * 24 * 60 * 60 * 1000;
@@ -191,6 +202,8 @@ const normaliseText = (value: string) =>
 =======
 =======
 >>>>>>> origin/main
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
 const CORE_FILTERS: FilterKey[] = ['material', 'color', 'size', 'price', 'occasion'];
 const BAG_FILTERS: FilterKey[] = ['capacity', 'device-fit', 'waterproof', 'wheels'];
 const SHOES_FILTERS: FilterKey[] = ['width', 'closure', 'heel-height'];
@@ -198,11 +211,17 @@ const APPAREL_FILTERS: FilterKey[] = ['fit', 'length', 'fabric', 'season'];
 
 const filtersForFamily = (family?: Family): FilterKey[] => {
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   if (!family) {
     return CORE_FILTERS;
   }
 >>>>>>> origin/main
+=======
+  if (!family) {
+    return CORE_FILTERS;
+  }
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
   switch (family) {
     case 'bags':
       return [...CORE_FILTERS, ...BAG_FILTERS];
@@ -211,10 +230,15 @@ const filtersForFamily = (family?: Family): FilterKey[] => {
     case 'apparel':
       return [...CORE_FILTERS, ...APPAREL_FILTERS];
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     case 'accessories':
       return CORE_FILTERS;
 >>>>>>> origin/main
+=======
+    case 'accessories':
+      return CORE_FILTERS;
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
     case 'jewellery':
       return ['material', 'color', 'price'];
     default:
@@ -223,16 +247,22 @@ const filtersForFamily = (family?: Family): FilterKey[] => {
 };
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 const normaliseText = (value: string) =>
   TEXT_NORMALISERS.reduce((acc, [pattern, replacement]) => acc.replace(pattern, replacement), value.toLowerCase());
 >>>>>>> ea3c549 (refactor: simplify catalog definitions)
 =======
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
 const normalizeText = (input: string) =>
   TEXT_NORMALIZATIONS.reduce(
     (acc, [pattern, replacement]) => acc.replace(pattern, replacement),
     input.toLowerCase()
   );
+<<<<<<< HEAD
 >>>>>>> origin/main
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
 
 const addAttribute = (attributes: Record<string, string[]>, key: string, value: string) => {
   const bucket = (attributes[key] ??= []);
@@ -241,6 +271,7 @@ const addAttribute = (attributes: Record<string, string[]>, key: string, value: 
   }
 };
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 const matchByKeywords = (title: string, rules: Array<{ key: string; keywords: string[] }>) =>
@@ -272,12 +303,17 @@ const detectKeywordCategory = <K extends keyof typeof KEYWORD_RULES>(
 const hasKeyword = (title: string, keywords: readonly string[]) => keywords.some((keyword) => title.includes(keyword));
 >>>>>>> ea3c549 (refactor: simplify catalog definitions)
 =======
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
 const hasKeyword = (title: string, keywords: readonly string[]) =>
   keywords.some((keyword) => title.includes(keyword));
 
 const hasAnyTag = (tags: Set<string>, candidates: string[]) =>
   candidates.some((candidate) => tags.has(candidate));
+<<<<<<< HEAD
 >>>>>>> origin/main
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
 
 const inferGender = (tags: Set<string>): 'women' | 'men' | 'unisex' => {
   if (tags.has('gender:women')) return 'women';
@@ -288,6 +324,7 @@ const inferGender = (tags: Set<string>): 'women' | 'men' | 'unisex' => {
 
 const inferFamilies = (tags: Set<string>): Set<Family> => {
   const families = new Set<Family>();
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
   tags.forEach((tag) => {
@@ -301,15 +338,20 @@ const inferFamilies = (tags: Set<string>): Set<Family> => {
 =======
 =======
 >>>>>>> origin/main
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
   if (tags.has('department:bags')) families.add('bags');
   if (tags.has('department:apparel')) families.add('apparel');
   if (tags.has('department:shoes')) families.add('shoes');
   if (tags.has('department:accessories')) families.add('accessories');
   if (tags.has('department:jewellery')) families.add('jewellery');
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea3c549 (refactor: simplify catalog definitions)
 =======
 >>>>>>> origin/main
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
   return families;
 };
 
@@ -323,6 +365,7 @@ const inferOccasions = (tags: Set<string>): Set<Occasion> => {
   return occasions;
 };
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 const ensureFamilyPresence = (product: NormalizedProduct) => {
@@ -352,6 +395,8 @@ const inferBagCategory = (title: string, tags: Set<string>): NormalizedProduct['
   }
   if (hasKeyword(title, BAG_KEYWORDS.day)) return 'day';
 =======
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
 const inferBagCategory = (title: string, tags: Set<string>): NormalizedProduct['bagCategory'] => {
   if (hasAnyTag(tags, ['occasion:travel'])) return 'travel';
   if (hasKeyword(title, BAG_KEYWORDS.travel)) return 'travel';
@@ -367,7 +412,10 @@ const inferBagCategory = (title: string, tags: Set<string>): NormalizedProduct['
 
   if (hasKeyword(title, BAG_KEYWORDS.day)) return 'day';
 
+<<<<<<< HEAD
 >>>>>>> origin/main
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
   return 'day';
 };
 
@@ -416,17 +464,23 @@ const THIRTY_DAYS = 30 * 24 * 60 * 60 * 1000;
 const FOURTEEN_DAYS = 14 * 24 * 60 * 60 * 1000;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea3c549 (refactor: simplify catalog definitions)
 export const normalizeProducts = (products: ShopifyProduct[]): NormalizedProduct[] => {
   const now = Date.now();
   return products.map((product) => {
     const normalizedTitle = normaliseText(product.title);
 =======
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
 export const normalizeProducts = (products: ShopifyProduct[]): NormalizedProduct[] => {
   const now = Date.now();
   return products.map((product) => {
     const normalizedTitle = normalizeText(product.title);
+<<<<<<< HEAD
 >>>>>>> origin/main
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
     const normalizedTags = (product.tags ?? []).map((tag) => tag.trim().toLowerCase());
     const tagSet = new Set(normalizedTags);
     const attributes: Record<string, string[]> = {};
@@ -442,6 +496,7 @@ export const normalizeProducts = (products: ShopifyProduct[]): NormalizedProduct
     const gender = inferGender(tagSet);
     const families = inferFamilies(tagSet);
     const occasions = inferOccasions(tagSet);
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 
@@ -469,12 +524,16 @@ export const normalizeProducts = (products: ShopifyProduct[]): NormalizedProduct
 =======
 
 >>>>>>> origin/main
+=======
+
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
     const bagCategory = families.has('bags') ? inferBagCategory(normalizedTitle, tagSet) : undefined;
     const apparelCategory = families.has('apparel') ? inferApparelCategory(normalizedTitle, tagSet) : undefined;
     const shoesCategory = families.has('shoes') ? inferShoesCategory(normalizedTitle, tagSet) : undefined;
     const accessoriesCategory = families.has('accessories')
       ? inferAccessoryCategory(normalizedTitle, tagSet)
       : undefined;
+<<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> ea3c549 (refactor: simplify catalog definitions)
     const jewelleryGender = families.has('jewellery')
@@ -486,6 +545,8 @@ export const normalizeProducts = (products: ShopifyProduct[]): NormalizedProduct
       : undefined;
 =======
 >>>>>>> origin/main
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
 
     const isNew = tagSet.has('new') || now - createdAtDate.getTime() <= THIRTY_DAYS;
     const trending = {
@@ -494,6 +555,7 @@ export const normalizeProducts = (products: ShopifyProduct[]): NormalizedProduct
       backIn: tagSet.has('back-in') || now - createdAtDate.getTime() <= FOURTEEN_DAYS
     } as const;
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 <<<<<<< HEAD
     const normalizedProduct: NormalizedProduct = {
@@ -501,6 +563,8 @@ export const normalizeProducts = (products: ShopifyProduct[]): NormalizedProduct
     return {
 >>>>>>> ea3c549 (refactor: simplify catalog definitions)
 =======
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
     const isSale = tagSet.has('sale');
 
     const jewelleryGender = families.has('jewellery')
@@ -512,7 +576,10 @@ export const normalizeProducts = (products: ShopifyProduct[]): NormalizedProduct
       : undefined;
 
     return {
+<<<<<<< HEAD
 >>>>>>> origin/main
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
       ...product,
       normalizedTitle,
       tagSet,
@@ -529,6 +596,7 @@ export const normalizeProducts = (products: ShopifyProduct[]): NormalizedProduct
       isNew,
       trending,
 <<<<<<< HEAD
+<<<<<<< HEAD
       isSale: tagSet.has('sale')
 <<<<<<< HEAD
     };
@@ -544,10 +612,14 @@ const matchesGender = (gender: 'women' | 'men') => (product: NormalizedProduct) 
 =======
       isSale
 >>>>>>> origin/main
+=======
+      isSale
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
     } satisfies NormalizedProduct;
   });
 };
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 const matchesGender = (product: NormalizedProduct, gender: 'women' | 'men') =>
 >>>>>>> ea3c549 (refactor: simplify catalog definitions)
@@ -1010,6 +1082,8 @@ export const listCatalogDefinitions = () => [...CATALOG_DEFINITIONS];
 export const getCatalogDefinition = (slug: string[]): CatalogDefinition | undefined =>
   CATALOG_DEFINITIONS.find((definition) => definition.slug.join('/') === slug.join('/'));
 =======
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
 const catalogDefinitions: CatalogDefinition[] = [];
 
 const registerDefinition = (definition: CatalogDefinition) => {
@@ -1212,7 +1286,10 @@ export const getCatalogDefinition = (slug: string[]): CatalogDefinition | undefi
   const key = slug.join('/');
   return catalogDefinitions.find((definition) => definition.slug.join('/') === key);
 };
+<<<<<<< HEAD
 >>>>>>> origin/main
+=======
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
 
 export const productsForSlug = (
   products: ShopifyProduct[],
@@ -1224,11 +1301,16 @@ export const productsForSlug = (
   }
   const normalized = normalizeProducts(products);
 <<<<<<< HEAD
+<<<<<<< HEAD
   return { definition, items: normalized.filter((product) => definition.rule(product)) };
 =======
   const items = normalized.filter((product) => definition.rule(product));
   return { definition, items };
 >>>>>>> origin/main
+=======
+  const items = normalized.filter((product) => definition.rule(product));
+  return { definition, items };
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)
 };
 
 export const breadcrumbsForSlug = (slug: string[]) => {
@@ -1245,7 +1327,11 @@ export const breadcrumbsForSlug = (slug: string[]) => {
 };
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 export const allCollectionSlugs = () => CATALOG_DEFINITIONS.map((definition) => definition.slug);
 =======
 export const allCollectionSlugs = () => catalogDefinitions.map((definition) => definition.slug);
 >>>>>>> origin/main
+=======
+export const allCollectionSlugs = () => catalogDefinitions.map((definition) => definition.slug);
+>>>>>>> 952310a (fix: allow filtering helper to constrain keys)

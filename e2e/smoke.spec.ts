@@ -7,8 +7,8 @@ test.describe('Storefront smoke test', () => {
     await page.goto('/');
     await expect(page.locator('text=Featured Heirlooms')).toBeVisible();
 
-    await page.getByRole('link', { name: 'Women' }).first().click();
-    await expect(page).toHaveURL(/\/women/);
+    await page.getByRole('link', { name: 'Catalog' }).first().click();
+    await expect(page).toHaveURL(/\/catalog/);
 
     const firstProduct = page.getByRole('link').filter({ hasText: '₹' }).first();
     await firstProduct.click();

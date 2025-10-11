@@ -13,17 +13,11 @@ import {
 } from '@/lib/taxonomy';
 import {
   applyFilters,
+  buildFilterGroups,
   parseFiltersFromSearchParams,
   parseQuery,
-  parseSort,
-  type SortSpec
+  parseSort
 } from '@/lib/search';
-import {
-  buildFilterGroupDisplay,
-  buildSearchItems,
-  filterAllowedKeys,
-  toURLSearchParams
-} from '@/lib/search-helpers';
 
 export const dynamic = 'force-dynamic';
 
@@ -68,22 +62,18 @@ export default async function CollectionPage({ params, searchParams }: Collectio
 
   const { definition, items } = result as { definition: CatalogDefinition; items: NormalizedProduct[] };
   const filterKeys = uniqueFilterKeys(definition);
-  const urlSearchParams = toURLSearchParams(searchParams);
-  const rawFilters = parseFiltersFromSearchParams(urlSearchParams);
-  const filters = filterAllowedKeys(rawFilters, filterKeys);
-  const query = parseQuery(urlSearchParams);
-  let sort = parseSort(urlSearchParams);
-  if (sort.key === 'relevance') {
-    sort = { key: 'new', dir: 'desc' } as SortSpec;
-  }
-
-  const searchableItems = buildSearchItems(items, filterKeys);
-  const filteredSearchItems = applyFilters(searchableItems, { query, sort, filters });
-  const productMap = new Map(items.map((product) => [String(product.id), product] as const));
-  const filteredProducts = filteredSearchItems
-    .map((item) => productMap.get(String(item.id)))
-    .filter((product): product is NormalizedProduct => Boolean(product));
-  const groups = buildFilterGroupDisplay(searchableItems, filterKeys);
+  const activeFilters = parseFiltersFromSearchParams(searchParams, filterKeys);
+  const queryValue = typeof searchParams.q === 'string'
+    ? searchParams.q
+    : Array.isArray(searchParams.q)
+      ? searchParams.q[0]
+      : undefined;
+  const query = parseQuery(queryValue);
+  const sort = parseSort(typeof searchParams.sort === 'string' ? searchParams.sort : undefined);
+  const filtered = applyFilters(items, { query, sort, filters: activeFilters }, filterKeys);
+  const groups = buildFilterGroups(items, filterKeys, activeFilters).filter(
+    (group) => group.options.length > 0
+  );
   const breadcrumbs = breadcrumbsForSlug(definition.slug);
 
   return (
@@ -114,11 +104,11 @@ export default async function CollectionPage({ params, searchParams }: Collectio
           groups={groups}
           initialQuery={query}
           initialSort={sort}
-          activeFilters={filters}
+          activeFilters={activeFilters}
         />
 
         <ProductGrid
-          products={filteredProducts}
+          products={filtered}
           emptyState="No pieces match your filters yet. Adjust the facets to continue exploring."
         />
       </Container>

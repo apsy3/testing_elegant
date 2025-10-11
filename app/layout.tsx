@@ -1,0 +1,35 @@
+import type { Metadata, Viewport } from 'next';
+import { Suspense } from 'react';
+import { Inter, Fraunces } from 'next/font/google';
+import clsx from 'clsx';
+import './globals.css';
+import { metadata as defaultMetadata } from '@/lib/seo';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+
+const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
+const fraunces = Fraunces({ subsets: ['latin'], variable: '--font-fraunces' });
+
+export const metadata: Metadata = defaultMetadata;
+
+export const viewport: Viewport = {
+  themeColor: '#ffffff'
+};
+
+export default function RootLayout({
+  children
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en" className={clsx(inter.variable, fraunces.variable)}>
+      <body className="bg-white text-charcoal font-sans">
+        <Suspense fallback={<div className="h-20 border-b border-charcoal/10 bg-white" />}>
+          <Header />
+        </Suspense>
+        <main className="min-h-screen pt-24">{children}</main>
+        <Footer />
+      </body>
+    </html>
+  );
+}

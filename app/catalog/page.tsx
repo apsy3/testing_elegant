@@ -1,9 +1,21 @@
+import { Suspense } from 'react';
 import dynamic from 'next/dynamic';
 import Container from '@/components/Container';
 import ProductGrid from '@/components/ProductGrid';
 import Skeleton from '@/components/Skeleton';
 import { listProducts } from '@/lib/shopify';
 import { searchProducts } from '@/lib/search';
+
+const FiltersFallback = () => (
+  <div className="space-y-4 rounded-3xl border border-charcoal/10 bg-white/60 p-6">
+    <Skeleton className="h-12 w-full rounded-full" />
+    <div className="flex flex-wrap gap-3">
+      {Array.from({ length: 6 }).map((_, index) => (
+        <Skeleton key={index} className="h-9 w-24 rounded-full" />
+      ))}
+    </div>
+  </div>
+);
 
 export const revalidate = 60;
 
@@ -17,16 +29,7 @@ type CatalogPageProps = {
 
 const CatalogFiltersClient = dynamic(() => import('@/components/CatalogFilters'), {
   ssr: false,
-  loading: () => (
-    <div className="space-y-4 rounded-3xl border border-charcoal/10 bg-white/60 p-6">
-      <Skeleton className="h-12 w-full rounded-full" />
-      <div className="flex flex-wrap gap-3">
-        {Array.from({ length: 6 }).map((_, index) => (
-          <Skeleton key={index} className="h-9 w-24 rounded-full" />
-        ))}
-      </div>
-    </div>
-  )
+  loading: FiltersFallback
 });
 
 export default async function CatalogPage({ searchParams }: CatalogPageProps) {
@@ -49,7 +52,9 @@ export default async function CatalogPage({ searchParams }: CatalogPageProps) {
             Filter by tags or search to uncover the perfect addition to your wardrobe.
           </p>
         </div>
-        <CatalogFiltersClient tags={tags} />
+        <Suspense fallback={<FiltersFallback />}>
+          <CatalogFiltersClient tags={tags} />
+        </Suspense>
         <ProductGrid products={filtered} emptyState="No pieces match your search just yet." />
       </Container>
     </div>

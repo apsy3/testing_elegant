@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { SITE_CONFIG } from './config';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://heritage-atelier.example';
@@ -27,4 +27,9 @@ export const metadata: Metadata = {
   icons: {
     icon: '/icon.svg'
   }
+};
+
+export const viewport: Viewport = {
+  themeColor: '#ffffff',
+  colorScheme: 'light'
 };

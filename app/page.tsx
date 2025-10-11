@@ -5,7 +5,7 @@ import ProductGrid from '@/components/ProductGrid';
 import { Button } from '@/components/Button';
 import { listProducts, productsByCollection } from '@/lib/shopify';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 export default async function HomePage() {
   const [products, collectionProducts] = await Promise.all([

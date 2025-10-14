@@ -53,7 +53,18 @@ export interface CatalogDefinition {
 }
 
 const BAG_KEYWORDS = {
-  travel: ['duffel', 'weekend', 'carry-on', 'carryon', 'cabin', 'trolley', 'wheeled', 'garment', 'flight', 'suitcase'],
+  travel: [
+    'duffel',
+    'weekend',
+    'carry-on',
+    'carryon',
+    'cabin',
+    'trolley',
+    'wheeled',
+    'garment',
+    'flight',
+    'suitcase'
+  ],
   work: ['briefcase', 'messenger', 'attache', 'attaché', 'laptop', 'portfolio'],
   evening: ['clutch', 'evening', 'wristlet', 'minaudiere', 'minaudière'],
   small: ['mini', 'micro', 'pouch', 'wallet', 'card holder', 'cardholder', 'coin'],
@@ -83,7 +94,7 @@ const ACCESSORY_KEYWORDS = {
   umbrellas: ['umbrella', 'parasol']
 } as const;
 
-const TEXT_NORMALISERS: Array<[RegExp, string]> = [
+const TEXT_NORMALIZATIONS: Array<[RegExp, string]> = [
   [/cross-body/g, 'crossbody'],
   [/carry on/g, 'carry-on']
 ];
@@ -94,6 +105,9 @@ const SHOES_FILTERS: FilterKey[] = ['width', 'closure', 'heel-height'];
 const APPAREL_FILTERS: FilterKey[] = ['fit', 'length', 'fabric', 'season'];
 
 const filtersForFamily = (family?: Family): FilterKey[] => {
+  if (!family) {
+    return CORE_FILTERS;
+  }
   switch (family) {
     case 'bags':
       return [...CORE_FILTERS, ...BAG_FILTERS];
@@ -101,6 +115,8 @@ const filtersForFamily = (family?: Family): FilterKey[] => {
       return [...CORE_FILTERS, ...SHOES_FILTERS];
     case 'apparel':
       return [...CORE_FILTERS, ...APPAREL_FILTERS];
+    case 'accessories':
+      return CORE_FILTERS;
     case 'jewellery':
       return ['material', 'color', 'price'];
     default:
@@ -108,8 +124,11 @@ const filtersForFamily = (family?: Family): FilterKey[] => {
   }
 };
 
-const normaliseText = (value: string) =>
-  TEXT_NORMALISERS.reduce((acc, [pattern, replacement]) => acc.replace(pattern, replacement), value.toLowerCase());
+const normalizeText = (input: string) =>
+  TEXT_NORMALIZATIONS.reduce(
+    (acc, [pattern, replacement]) => acc.replace(pattern, replacement),
+    input.toLowerCase()
+  );
 
 const addAttribute = (attributes: Record<string, string[]>, key: string, value: string) => {
   const bucket = (attributes[key] ??= []);
@@ -118,7 +137,11 @@ const addAttribute = (attributes: Record<string, string[]>, key: string, value: 
   }
 };
 
-const hasKeyword = (title: string, keywords: readonly string[]) => keywords.some((keyword) => title.includes(keyword));
+const hasKeyword = (title: string, keywords: readonly string[]) =>
+  keywords.some((keyword) => title.includes(keyword));
+
+const hasAnyTag = (tags: Set<string>, candidates: string[]) =>
+  candidates.some((candidate) => tags.has(candidate));
 
 const inferGender = (tags: Set<string>): 'women' | 'men' | 'unisex' => {
   if (tags.has('gender:women')) return 'women';
@@ -148,13 +171,20 @@ const inferOccasions = (tags: Set<string>): Set<Occasion> => {
 };
 
 const inferBagCategory = (title: string, tags: Set<string>): NormalizedProduct['bagCategory'] => {
-  if (tags.has('occasion:travel') || hasKeyword(title, BAG_KEYWORDS.travel)) return 'travel';
-  if (tags.has('occasion:work') || hasKeyword(title, BAG_KEYWORDS.work)) return 'work';
-  if (tags.has('occasion:evening') || hasKeyword(title, BAG_KEYWORDS.evening)) return 'evening';
-  if (tags.has('size:mini') || tags.has('size:micro') || tags.has('small') || hasKeyword(title, BAG_KEYWORDS.small)) {
-    return 'small';
-  }
+  if (hasAnyTag(tags, ['occasion:travel'])) return 'travel';
+  if (hasKeyword(title, BAG_KEYWORDS.travel)) return 'travel';
+
+  if (hasAnyTag(tags, ['occasion:work'])) return 'work';
+  if (hasKeyword(title, BAG_KEYWORDS.work)) return 'work';
+
+  if (hasAnyTag(tags, ['occasion:evening'])) return 'evening';
+  if (hasKeyword(title, BAG_KEYWORDS.evening)) return 'evening';
+
+  if (hasAnyTag(tags, ['small', 'size:mini', 'size:micro'])) return 'small';
+  if (hasKeyword(title, BAG_KEYWORDS.small)) return 'small';
+
   if (hasKeyword(title, BAG_KEYWORDS.day)) return 'day';
+
   return 'day';
 };
 
@@ -205,7 +235,7 @@ const FOURTEEN_DAYS = 14 * 24 * 60 * 60 * 1000;
 export const normalizeProducts = (products: ShopifyProduct[]): NormalizedProduct[] => {
   const now = Date.now();
   return products.map((product) => {
-    const normalizedTitle = normaliseText(product.title);
+    const normalizedTitle = normalizeText(product.title);
     const normalizedTags = (product.tags ?? []).map((tag) => tag.trim().toLowerCase());
     const tagSet = new Set(normalizedTags);
     const attributes: Record<string, string[]> = {};
@@ -221,18 +251,12 @@ export const normalizeProducts = (products: ShopifyProduct[]): NormalizedProduct
     const gender = inferGender(tagSet);
     const families = inferFamilies(tagSet);
     const occasions = inferOccasions(tagSet);
+
     const bagCategory = families.has('bags') ? inferBagCategory(normalizedTitle, tagSet) : undefined;
     const apparelCategory = families.has('apparel') ? inferApparelCategory(normalizedTitle, tagSet) : undefined;
     const shoesCategory = families.has('shoes') ? inferShoesCategory(normalizedTitle, tagSet) : undefined;
     const accessoriesCategory = families.has('accessories')
       ? inferAccessoryCategory(normalizedTitle, tagSet)
-      : undefined;
-    const jewelleryGender = families.has('jewellery')
-      ? tagSet.has('gender:women')
-        ? 'women'
-        : tagSet.has('gender:men')
-          ? 'men'
-          : 'unisex'
       : undefined;
 
     const isNew = tagSet.has('new') || now - createdAtDate.getTime() <= THIRTY_DAYS;
@@ -241,6 +265,15 @@ export const normalizeProducts = (products: ShopifyProduct[]): NormalizedProduct
       mostWanted: tagSet.has('most-wanted') || tagSet.has('mostwanted'),
       backIn: tagSet.has('back-in') || now - createdAtDate.getTime() <= FOURTEEN_DAYS
     } as const;
+    const isSale = tagSet.has('sale');
+
+    const jewelleryGender = families.has('jewellery')
+      ? tagSet.has('gender:women')
+        ? 'women'
+        : tagSet.has('gender:men')
+          ? 'men'
+          : 'unisex'
+      : undefined;
 
     return {
       ...product,
@@ -258,242 +291,213 @@ export const normalizeProducts = (products: ShopifyProduct[]): NormalizedProduct
       createdAtDate,
       isNew,
       trending,
-      isSale: tagSet.has('sale')
+      isSale
     } satisfies NormalizedProduct;
   });
 };
 
-const matchesGender = (product: NormalizedProduct, gender: 'women' | 'men') =>
-  gender === 'women'
-    ? product.gender === 'women' || product.gender === 'unisex'
-    : product.gender === 'men' || product.gender === 'unisex';
+const catalogDefinitions: CatalogDefinition[] = [];
 
-const bagCategoryIs = (...categories: NonNullable<NormalizedProduct['bagCategory']>[]) =>
-  (product: NormalizedProduct) => {
-    const category = product.bagCategory ?? 'day';
-    return categories.includes(category);
-  };
+const registerDefinition = (definition: CatalogDefinition) => {
+  catalogDefinitions.push(definition);
+};
 
-const categoryIs = <Key extends 'apparelCategory' | 'shoesCategory' | 'accessoriesCategory'>(
-  key: Key,
-  ...values: NonNullable<NormalizedProduct[Key]>[]
-) =>
-  (product: NormalizedProduct) => {
-    const current = product[key];
-    return current ? values.includes(current as NonNullable<NormalizedProduct[Key]>) : false;
-  };
-
-interface GenderFamilyConfigEntry {
-  slug: string[];
-  title: string;
-  predicate?: (product: NormalizedProduct) => boolean;
-}
-
-type GenderFamilyConfig = Partial<Record<Exclude<Family, 'jewellery'>, GenderFamilyConfigEntry[]>>;
-
-const GENDER_COLLECTIONS: Record<'women' | 'men', { title: string; families: GenderFamilyConfig }> = {
-  women: {
-    title: 'Women',
-    families: {
-      bags: [
-        { slug: [], title: 'Women · Bags' },
-        { slug: ['day'], title: 'Women · Bags · Day', predicate: bagCategoryIs('day', 'work') },
-        { slug: ['travel'], title: 'Women · Bags · Travel', predicate: bagCategoryIs('travel') },
-        { slug: ['small'], title: 'Women · Bags · Small', predicate: bagCategoryIs('small') },
-        { slug: ['evening'], title: 'Women · Bags · Evening', predicate: bagCategoryIs('evening') }
-      ],
-      apparel: [
-        { slug: [], title: 'Women · Apparel' },
-        { slug: ['tops'], title: 'Women · Apparel · Tops', predicate: categoryIs('apparelCategory', 'tops') },
-        { slug: ['bottoms'], title: 'Women · Apparel · Bottoms', predicate: categoryIs('apparelCategory', 'bottoms') },
-        { slug: ['outer'], title: 'Women · Apparel · Outer', predicate: categoryIs('apparelCategory', 'outer') },
-        { slug: ['dresses'], title: 'Women · Apparel · Dresses', predicate: categoryIs('apparelCategory', 'dresses') }
-      ],
-      shoes: [
-        { slug: [], title: 'Women · Shoes' },
-        { slug: ['sneakers'], title: 'Women · Shoes · Sneakers', predicate: categoryIs('shoesCategory', 'sneakers') },
-        { slug: ['boots'], title: 'Women · Shoes · Boots', predicate: categoryIs('shoesCategory', 'boots') },
-        { slug: ['sandals'], title: 'Women · Shoes · Sandals', predicate: categoryIs('shoesCategory', 'sandals') },
-        { slug: ['heels'], title: 'Women · Shoes · Heels', predicate: categoryIs('shoesCategory', 'heels') }
-      ],
-      accessories: [
-        { slug: [], title: 'Women · Accessories' },
-        { slug: ['belts'], title: 'Women · Accessories · Belts', predicate: categoryIs('accessoriesCategory', 'belts') },
-        { slug: ['scarves'], title: 'Women · Accessories · Scarves', predicate: categoryIs('accessoriesCategory', 'scarves') },
-        { slug: ['headwear'], title: 'Women · Accessories · Headwear', predicate: categoryIs('accessoriesCategory', 'headwear') },
-        { slug: ['umbrellas'], title: 'Women · Accessories · Umbrellas', predicate: categoryIs('accessoriesCategory', 'umbrellas') }
-      ]
-    }
-  },
-  men: {
-    title: 'Men',
-    families: {
-      bags: [
-        { slug: [], title: 'Men · Bags' },
-        { slug: ['day'], title: 'Men · Bags · Day', predicate: bagCategoryIs('day') },
-        { slug: ['travel'], title: 'Men · Bags · Travel', predicate: bagCategoryIs('travel') },
-        { slug: ['small'], title: 'Men · Bags · Small', predicate: bagCategoryIs('small') },
-        { slug: ['work'], title: 'Men · Bags · Work', predicate: bagCategoryIs('work') }
-      ],
-      apparel: [
-        { slug: [], title: 'Men · Apparel' },
-        { slug: ['tops'], title: 'Men · Apparel · Tops', predicate: categoryIs('apparelCategory', 'tops') },
-        { slug: ['bottoms'], title: 'Men · Apparel · Bottoms', predicate: categoryIs('apparelCategory', 'bottoms') },
-        { slug: ['outer'], title: 'Men · Apparel · Outer', predicate: categoryIs('apparelCategory', 'outer') },
-        { slug: ['lounge'], title: 'Men · Apparel · Lounge', predicate: categoryIs('apparelCategory', 'lounge') }
-      ],
-      shoes: [
-        { slug: [], title: 'Men · Shoes' },
-        { slug: ['sneakers'], title: 'Men · Shoes · Sneakers', predicate: categoryIs('shoesCategory', 'sneakers') },
-        { slug: ['boots'], title: 'Men · Shoes · Boots', predicate: categoryIs('shoesCategory', 'boots') },
-        { slug: ['sandals'], title: 'Men · Shoes · Sandals', predicate: categoryIs('shoesCategory', 'sandals') },
-        { slug: ['formal'], title: 'Men · Shoes · Formal', predicate: categoryIs('shoesCategory', 'formal') }
-      ],
-      accessories: [
-        { slug: [], title: 'Men · Accessories' },
-        { slug: ['belts'], title: 'Men · Accessories · Belts', predicate: categoryIs('accessoriesCategory', 'belts') },
-        { slug: ['scarves'], title: 'Men · Accessories · Scarves', predicate: categoryIs('accessoriesCategory', 'scarves') },
-        { slug: ['headwear'], title: 'Men · Accessories · Headwear', predicate: categoryIs('accessoriesCategory', 'headwear') },
-        { slug: ['umbrellas'], title: 'Men · Accessories · Umbrellas', predicate: categoryIs('accessoriesCategory', 'umbrellas') }
-      ]
-    }
+const matchesGender = (product: NormalizedProduct, gender: 'women' | 'men') => {
+  if (gender === 'women') {
+    return product.gender === 'women' || product.gender === 'unisex';
   }
+  return product.gender === 'men' || product.gender === 'unisex';
 };
 
-const buildCatalogDefinitions = (): CatalogDefinition[] => {
-  const definitions: CatalogDefinition[] = [];
-  const register = (definition: CatalogDefinition) => definitions.push(definition);
-
-  const registerGender = (gender: 'women' | 'men') => {
-    const config = GENDER_COLLECTIONS[gender];
-    register({
-      slug: [gender],
-      title: config.title,
-      section: gender,
-      allowedFilters: filtersForFamily(),
-      rule: (product) => matchesGender(product, gender)
-    });
-
-    Object.entries(config.families).forEach(([familyKey, entries]) => {
-      const family = familyKey as Exclude<Family, 'jewellery'>;
-      entries?.forEach((entry) => {
-        register({
-          slug: [gender, family, ...entry.slug],
-          title: entry.title,
-          section: gender,
-          allowedFilters: filtersForFamily(family),
-          rule: (product) =>
-            matchesGender(product, gender) &&
-            product.families.has(family) &&
-            (!entry.predicate || entry.predicate(product))
-        });
-      });
-    });
-  };
-
-  registerGender('women');
-  registerGender('men');
-
-  const simpleDefinitions: Array<{
-    slug: string[];
-    title: string;
-    section: Department;
-    filters?: FilterKey[];
-    rule: (product: NormalizedProduct) => boolean;
-  }> = [
-    {
-      slug: ['jewellery'],
-      title: 'Jewellery',
-      section: 'jewellery',
-      filters: filtersForFamily('jewellery'),
-      rule: (product) => product.families.has('jewellery')
-    },
-    {
-      slug: ['jewellery', 'women'],
-      title: 'Jewellery · Women',
-      section: 'jewellery',
-      filters: filtersForFamily('jewellery'),
-      rule: (product) => product.families.has('jewellery') && (!product.jewelleryGender || product.jewelleryGender !== 'men')
-    },
-    {
-      slug: ['jewellery', 'men'],
-      title: 'Jewellery · Men',
-      section: 'jewellery',
-      filters: filtersForFamily('jewellery'),
-      rule: (product) => product.families.has('jewellery') && (!product.jewelleryGender || product.jewelleryGender !== 'women')
-    },
-    {
-      slug: ['new', 'all'],
-      title: 'New · All',
-      section: 'new',
-      rule: (product) => product.isNew
-    },
-    {
-      slug: ['new', 'bags'],
-      title: 'New · Bags',
-      section: 'new',
-      filters: filtersForFamily('bags'),
-      rule: (product) => product.isNew && product.families.has('bags')
-    },
-    {
-      slug: ['new', 'apparel'],
-      title: 'New · Apparel',
-      section: 'new',
-      filters: filtersForFamily('apparel'),
-      rule: (product) => product.isNew && product.families.has('apparel')
-    },
-    {
-      slug: ['new', 'shoes'],
-      title: 'New · Shoes',
-      section: 'new',
-      filters: filtersForFamily('shoes'),
-      rule: (product) => product.isNew && product.families.has('shoes')
-    },
-    {
-      slug: ['trending', 'bestsellers'],
-      title: 'Trending · Bestsellers',
-      section: 'trending',
-      rule: (product) => product.trending.bestsellers
-    },
-    {
-      slug: ['trending', 'most-wanted'],
-      title: 'Trending · Most-Wanted',
-      section: 'trending',
-      rule: (product) => product.trending.mostWanted
-    },
-    {
-      slug: ['trending', 'back-in'],
-      title: 'Trending · Back-In',
-      section: 'trending',
-      rule: (product) => product.trending.backIn
-    },
-    {
-      slug: ['sale'],
-      title: 'Private Sale',
-      section: 'sale',
-      rule: (product) => product.isSale
-    }
-  ];
-
-  simpleDefinitions.forEach(({ slug, title, section, filters, rule }) => {
-    register({
-      slug,
-      title,
-      section,
-      allowedFilters: filters ?? filtersForFamily(),
-      rule
-    });
+const registerGenderFamily = (
+  gender: 'women' | 'men',
+  family: Family,
+  slugTail: string[],
+  title: string,
+  predicate?: (product: NormalizedProduct) => boolean
+) => {
+  registerDefinition({
+    slug: [gender, family, ...slugTail],
+    title,
+    section: gender,
+    allowedFilters: filtersForFamily(family),
+    rule: (product) =>
+      matchesGender(product, gender) &&
+      product.families.has(family) &&
+      (!predicate || predicate(product))
   });
-
-  return definitions;
 };
 
-const CATALOG_DEFINITIONS = buildCatalogDefinitions();
+// Women definitions
+registerDefinition({
+  slug: ['women'],
+  title: 'Women',
+  section: 'women',
+  allowedFilters: filtersForFamily(),
+  rule: (product) => matchesGender(product, 'women')
+});
 
-export const listCatalogDefinitions = () => [...CATALOG_DEFINITIONS];
+registerGenderFamily('women', 'bags', [], 'Women · Bags');
+registerGenderFamily(
+  'women',
+  'bags',
+  ['day'],
+  'Women · Bags · Day',
+  (product) => product.bagCategory === 'day' || product.bagCategory === 'work'
+);
+registerGenderFamily('women', 'bags', ['travel'], 'Women · Bags · Travel', (product) => product.bagCategory === 'travel');
+registerGenderFamily('women', 'bags', ['small'], 'Women · Bags · Small', (product) => product.bagCategory === 'small');
+registerGenderFamily('women', 'bags', ['evening'], 'Women · Bags · Evening', (product) => product.bagCategory === 'evening');
 
-export const getCatalogDefinition = (slug: string[]): CatalogDefinition | undefined =>
-  CATALOG_DEFINITIONS.find((definition) => definition.slug.join('/') === slug.join('/'));
+registerGenderFamily('women', 'apparel', [], 'Women · Apparel');
+registerGenderFamily('women', 'apparel', ['tops'], 'Women · Apparel · Tops', (product) => product.apparelCategory === 'tops');
+registerGenderFamily('women', 'apparel', ['bottoms'], 'Women · Apparel · Bottoms', (product) => product.apparelCategory === 'bottoms');
+registerGenderFamily('women', 'apparel', ['outer'], 'Women · Apparel · Outer', (product) => product.apparelCategory === 'outer');
+registerGenderFamily('women', 'apparel', ['dresses'], 'Women · Apparel · Dresses', (product) => product.apparelCategory === 'dresses');
+
+registerGenderFamily('women', 'shoes', [], 'Women · Shoes');
+registerGenderFamily('women', 'shoes', ['sneakers'], 'Women · Shoes · Sneakers', (product) => product.shoesCategory === 'sneakers');
+registerGenderFamily('women', 'shoes', ['boots'], 'Women · Shoes · Boots', (product) => product.shoesCategory === 'boots');
+registerGenderFamily('women', 'shoes', ['sandals'], 'Women · Shoes · Sandals', (product) => product.shoesCategory === 'sandals');
+registerGenderFamily('women', 'shoes', ['heels'], 'Women · Shoes · Heels', (product) => product.shoesCategory === 'heels');
+
+registerGenderFamily('women', 'accessories', [], 'Women · Accessories');
+registerGenderFamily('women', 'accessories', ['belts'], 'Women · Accessories · Belts', (product) => product.accessoriesCategory === 'belts');
+registerGenderFamily('women', 'accessories', ['scarves'], 'Women · Accessories · Scarves', (product) => product.accessoriesCategory === 'scarves');
+registerGenderFamily('women', 'accessories', ['headwear'], 'Women · Accessories · Headwear', (product) => product.accessoriesCategory === 'headwear');
+registerGenderFamily('women', 'accessories', ['umbrellas'], 'Women · Accessories · Umbrellas', (product) => product.accessoriesCategory === 'umbrellas');
+
+// Men definitions
+registerDefinition({
+  slug: ['men'],
+  title: 'Men',
+  section: 'men',
+  allowedFilters: filtersForFamily(),
+  rule: (product) => matchesGender(product, 'men')
+});
+
+registerGenderFamily('men', 'bags', [], 'Men · Bags');
+registerGenderFamily('men', 'bags', ['day'], 'Men · Bags · Day', (product) => product.bagCategory === 'day');
+registerGenderFamily('men', 'bags', ['travel'], 'Men · Bags · Travel', (product) => product.bagCategory === 'travel');
+registerGenderFamily('men', 'bags', ['small'], 'Men · Bags · Small', (product) => product.bagCategory === 'small');
+registerGenderFamily('men', 'bags', ['work'], 'Men · Bags · Work', (product) => product.bagCategory === 'work');
+
+registerGenderFamily('men', 'apparel', [], 'Men · Apparel');
+registerGenderFamily('men', 'apparel', ['tops'], 'Men · Apparel · Tops', (product) => product.apparelCategory === 'tops');
+registerGenderFamily('men', 'apparel', ['bottoms'], 'Men · Apparel · Bottoms', (product) => product.apparelCategory === 'bottoms');
+registerGenderFamily('men', 'apparel', ['outer'], 'Men · Apparel · Outer', (product) => product.apparelCategory === 'outer');
+registerGenderFamily('men', 'apparel', ['lounge'], 'Men · Apparel · Lounge', (product) => product.apparelCategory === 'lounge');
+
+registerGenderFamily('men', 'shoes', [], 'Men · Shoes');
+registerGenderFamily('men', 'shoes', ['sneakers'], 'Men · Shoes · Sneakers', (product) => product.shoesCategory === 'sneakers');
+registerGenderFamily('men', 'shoes', ['boots'], 'Men · Shoes · Boots', (product) => product.shoesCategory === 'boots');
+registerGenderFamily('men', 'shoes', ['sandals'], 'Men · Shoes · Sandals', (product) => product.shoesCategory === 'sandals');
+registerGenderFamily('men', 'shoes', ['formal'], 'Men · Shoes · Formal', (product) => product.shoesCategory === 'formal');
+
+registerGenderFamily('men', 'accessories', [], 'Men · Accessories');
+registerGenderFamily('men', 'accessories', ['belts'], 'Men · Accessories · Belts', (product) => product.accessoriesCategory === 'belts');
+registerGenderFamily('men', 'accessories', ['scarves'], 'Men · Accessories · Scarves', (product) => product.accessoriesCategory === 'scarves');
+registerGenderFamily('men', 'accessories', ['headwear'], 'Men · Accessories · Headwear', (product) => product.accessoriesCategory === 'headwear');
+registerGenderFamily('men', 'accessories', ['umbrellas'], 'Men · Accessories · Umbrellas', (product) => product.accessoriesCategory === 'umbrellas');
+
+// Jewellery
+registerDefinition({
+  slug: ['jewellery'],
+  title: 'Jewellery',
+  section: 'jewellery',
+  allowedFilters: ['material', 'color', 'price'],
+  rule: (product) => product.families.has('jewellery')
+});
+
+registerDefinition({
+  slug: ['jewellery', 'women'],
+  title: 'Jewellery · Women',
+  section: 'jewellery',
+  allowedFilters: ['material', 'color', 'price'],
+  rule: (product) => product.families.has('jewellery') && (product.jewelleryGender === 'women' || product.jewelleryGender === 'unisex')
+});
+
+registerDefinition({
+  slug: ['jewellery', 'men'],
+  title: 'Jewellery · Men',
+  section: 'jewellery',
+  allowedFilters: ['material', 'color', 'price'],
+  rule: (product) => product.families.has('jewellery') && (product.jewelleryGender === 'men' || product.jewelleryGender === 'unisex')
+});
+
+// New collections
+registerDefinition({
+  slug: ['new', 'all'],
+  title: 'New · All',
+  section: 'new',
+  allowedFilters: filtersForFamily(),
+  rule: (product) => product.isNew
+});
+
+registerDefinition({
+  slug: ['new', 'bags'],
+  title: 'New · Bags',
+  section: 'new',
+  allowedFilters: filtersForFamily('bags'),
+  rule: (product) => product.isNew && product.families.has('bags')
+});
+
+registerDefinition({
+  slug: ['new', 'apparel'],
+  title: 'New · Apparel',
+  section: 'new',
+  allowedFilters: filtersForFamily('apparel'),
+  rule: (product) => product.isNew && product.families.has('apparel')
+});
+
+registerDefinition({
+  slug: ['new', 'shoes'],
+  title: 'New · Shoes',
+  section: 'new',
+  allowedFilters: filtersForFamily('shoes'),
+  rule: (product) => product.isNew && product.families.has('shoes')
+});
+
+// Trending collections
+registerDefinition({
+  slug: ['trending', 'bestsellers'],
+  title: 'Trending · Bestsellers',
+  section: 'trending',
+  allowedFilters: filtersForFamily(),
+  rule: (product) => product.trending.bestsellers
+});
+
+registerDefinition({
+  slug: ['trending', 'most-wanted'],
+  title: 'Trending · Most-Wanted',
+  section: 'trending',
+  allowedFilters: filtersForFamily(),
+  rule: (product) => product.trending.mostWanted
+});
+
+registerDefinition({
+  slug: ['trending', 'back-in'],
+  title: 'Trending · Back-In',
+  section: 'trending',
+  allowedFilters: filtersForFamily(),
+  rule: (product) => product.trending.backIn
+});
+
+// Sale
+registerDefinition({
+  slug: ['sale'],
+  title: 'Private Sale',
+  section: 'sale',
+  allowedFilters: filtersForFamily(),
+  rule: (product) => product.isSale
+});
+
+export const listCatalogDefinitions = () => [...catalogDefinitions];
+
+export const getCatalogDefinition = (slug: string[]): CatalogDefinition | undefined => {
+  const key = slug.join('/');
+  return catalogDefinitions.find((definition) => definition.slug.join('/') === key);
+};
 
 export const productsForSlug = (
   products: ShopifyProduct[],
@@ -504,7 +508,8 @@ export const productsForSlug = (
     return null;
   }
   const normalized = normalizeProducts(products);
-  return { definition, items: normalized.filter((product) => definition.rule(product)) };
+  const items = normalized.filter((product) => definition.rule(product));
+  return { definition, items };
 };
 
 export const breadcrumbsForSlug = (slug: string[]) => {
@@ -520,4 +525,4 @@ export const breadcrumbsForSlug = (slug: string[]) => {
   return crumbs;
 };
 
-export const allCollectionSlugs = () => CATALOG_DEFINITIONS.map((definition) => definition.slug);
+export const allCollectionSlugs = () => catalogDefinitions.map((definition) => definition.slug);

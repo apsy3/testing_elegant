@@ -2,20 +2,14 @@ import Container from '@/components/Container';
 import CatalogFilters from '@/components/CatalogFilters';
 import ProductGrid from '@/components/ProductGrid';
 import { listProducts } from '@/lib/shopify';
-import { normalizeProducts, type FilterKey } from '@/lib/catalog';
+import { normalizeProducts, type FilterKey } from '@/lib/taxonomy';
 import {
   applyFilters,
+  buildFilterGroups,
   parseFiltersFromSearchParams,
   parseQuery,
-  parseSort,
-  type SortSpec
+  parseSort
 } from '@/lib/search';
-import {
-  buildFilterGroupDisplay,
-  buildSearchItems,
-  filterAllowedKeys,
-  toURLSearchParams
-} from '@/lib/search-helpers';
 
 export const dynamic = 'force-dynamic';
 
@@ -28,22 +22,18 @@ interface SearchPageProps {
 export default async function SearchPage({ searchParams }: SearchPageProps) {
   const products = await listProducts();
   const normalized = normalizeProducts(products);
-  const params = toURLSearchParams(searchParams);
-  const rawFilters = parseFiltersFromSearchParams(params);
-  const filters = filterAllowedKeys(rawFilters, FILTER_KEYS);
-  const query = parseQuery(params);
-  let sort = parseSort(params);
-  if (sort.key === 'relevance') {
-    sort = { key: 'new', dir: 'desc' } as SortSpec;
-  }
-
-  const searchableItems = buildSearchItems(normalized, FILTER_KEYS);
-  const filteredSearchItems = applyFilters(searchableItems, { query, sort, filters });
-  const productMap = new Map(normalized.map((product) => [String(product.id), product] as const));
-  const filteredProducts = filteredSearchItems
-    .map((item) => productMap.get(String(item.id)))
-    .filter((product): product is ReturnType<typeof normalizeProducts>[number] => Boolean(product));
-  const groups = buildFilterGroupDisplay(searchableItems, FILTER_KEYS);
+  const filters = parseFiltersFromSearchParams(searchParams, FILTER_KEYS);
+  const queryValue = typeof searchParams.q === 'string'
+    ? searchParams.q
+    : Array.isArray(searchParams.q)
+      ? searchParams.q[0]
+      : undefined;
+  const query = parseQuery(queryValue);
+  const sort = parseSort(typeof searchParams.sort === 'string' ? searchParams.sort : undefined);
+  const filtered = applyFilters(normalized, { query, sort, filters }, FILTER_KEYS);
+  const groups = buildFilterGroups(normalized, FILTER_KEYS, filters).filter(
+    (group) => group.options.length > 0
+  );
 
   return (
     <div className="pb-24">
@@ -64,7 +54,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
         />
 
         <ProductGrid
-          products={filteredProducts}
+          products={filtered}
           emptyState="No pieces match your query yet. Adjust filters or try another search."
         />
       </Container>

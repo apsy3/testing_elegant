@@ -1,16 +1,7 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-'use client';
-
-import Link from 'next/link';
-import { useRouter, usePathname } from 'next/navigation';
-=======
 'use client';
 
 import Link from 'next/link';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
->>>>>>> 4bf40f5 (fix: enforce pnpm install on vercel)
 import { useEffect, useMemo, useState } from 'react';
 import { ShoppingBagIcon } from '@heroicons/react/24/outline';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
@@ -27,39 +18,23 @@ const links = [
 export default function Header() {
   const router = useRouter();
   const pathname = usePathname();
-<<<<<<< HEAD
-  const [search, setSearch] = useState('');
-=======
   const searchParams = useSearchParams();
   const [search, setSearch] = useState(searchParams?.get('q') ?? '');
->>>>>>> 4bf40f5 (fix: enforce pnpm install on vercel)
   const count = useCartStore(selectCartCount);
   const openCart = useCartStore((state) => state.openCart);
   const isOpen = useCartStore((state) => state.isOpen);
   const closeCart = useCartStore((state) => state.closeCart);
 
   useEffect(() => {
-<<<<<<< HEAD
-=======
     setSearch(searchParams?.get('q') ?? '');
   }, [searchParams]);
 
   useEffect(() => {
->>>>>>> 4bf40f5 (fix: enforce pnpm install on vercel)
     closeCart();
   }, [pathname, closeCart]);
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-<<<<<<< HEAD
-    const params = new URLSearchParams();
-    const trimmed = search.trim();
-    if (trimmed) {
-      params.set('q', trimmed);
-    }
-    const queryString = params.toString();
-    router.push(`/catalog${queryString ? `?${queryString}` : ''}`);
-=======
     const params = new URLSearchParams(searchParams?.toString() ?? '');
     if (search) {
       params.set('q', search);
@@ -67,7 +42,6 @@ export default function Header() {
       params.delete('q');
     }
     router.push(`/catalog?${params.toString()}`);
->>>>>>> 4bf40f5 (fix: enforce pnpm install on vercel)
   };
 
   const activeLink = useMemo(() => pathname?.split('?')[0], [pathname]);
@@ -131,32 +105,3 @@ export default function Header() {
     </header>
   );
 }
-<<<<<<< HEAD
-=======
-import dynamic from 'next/dynamic';
-
-const HeaderClient = dynamic(() => import('./HeaderClient'), {
-  ssr: false
-});
-
-export default HeaderClient;
->>>>>>> 9f14315 (fix: drop useSearchParams to unblock static build)
-=======
-import { Suspense } from 'react';
-import dynamic from 'next/dynamic';
-
-const HeaderClient = dynamic(() => import('./HeaderClient'), {
-  ssr: false,
-  suspense: true
-});
-
-export default function Header() {
-  return (
-    <Suspense fallback={<div className="h-20 border-b border-charcoal/10 bg-white" />}>
-      <HeaderClient />
-    </Suspense>
-  );
-}
->>>>>>> e3974fd (fix: unblock static builds)
-=======
->>>>>>> 4bf40f5 (fix: enforce pnpm install on vercel)

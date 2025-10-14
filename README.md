@@ -1,10 +1,17 @@
-# Luxury–Heritage Marketplace Monorepo
+# Luxury–Heritage Marketplace Preview
 
-This repository contains the initial scaffolding for the Luxury–Heritage Marketplace platform as described in the master prompt. It sets up a Turborepo workspace for the Next.js storefront/dashboards, NestJS backend, and shared packages.
-
-Refer to `docs/IMPLEMENTATION_PLAN.md` for the staged execution roadmap that mirrors the requested module-by-module passes.
+This repository hosts a lightweight preview of the headless Shopify concept site. All data is mock-only and the checkout flow returns a local fallback URL so nothing touches live merchant infrastructure.
 
 ## Tooling prerequisites
 
-- Node.js 18.18.x LTS (see `.nvmrc` for the exact version used in previews)
-- pnpm 9.x (Corepack recommended)
+- Node.js 18.18.x LTS (see `.nvmrc`)
+- pnpm 9.x (Corepack recommended) or `npm` with the scripts below
+
+## Useful scripts
+
+- `pnpm dev` – run the Next.js development server
+- `pnpm build` – create a production build for static preview
+- `pnpm lint` – run ESLint with the Next.js config
+- `pnpm typecheck` – run TypeScript in no-emit mode
+
+Automated tests are disabled in preview mode to keep dependencies minimal.

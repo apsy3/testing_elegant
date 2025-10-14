@@ -14,7 +14,7 @@
     "esModuleInterop": true,
     "jsx": "preserve",
     "incremental": true,
-    "types": ["vitest/globals", "@types/node"],
+    "types": ["@types/node"],
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*"]

@@ -1,9 +1,10 @@
 'use client';
 
 import type { ButtonHTMLAttributes } from 'react';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils';
 
-const baseStyles = 'inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-medium transition-colors duration-200 btn-focus shadow-soft';
+const baseStyles =
+  'inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-medium transition-colors duration-200 btn-focus shadow-soft';
 
 const variantStyles: Record<'primary' | 'secondary' | 'ghost', string> = {
   primary: 'bg-charcoal text-white hover:bg-gold hover:text-charcoal',
@@ -31,7 +32,7 @@ export function buttonClasses({
   size?: 'sm' | 'md' | 'lg';
   className?: string;
 } = {}) {
-  return clsx(baseStyles, variantStyles[variant], sizeStyles[size], className);
+  return cn(baseStyles, variantStyles[variant], sizeStyles[size], className);
 }
 
 export function Button({ variant = 'primary', size = 'md', className, ...props }: ButtonProps) {

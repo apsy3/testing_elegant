@@ -1,8 +1,15 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 
+<<<<<<< HEAD
 vi.mock('react', () => ({
   cache: <T>(fn: T) => fn
 }));
+=======
+declare global {
+  // eslint-disable-next-line no-var
+  var fetch: typeof fetch;
+}
+>>>>>>> ea3c549 (refactor: simplify catalog definitions)
 
 describe('shopifyFetch', () => {
   beforeEach(() => {

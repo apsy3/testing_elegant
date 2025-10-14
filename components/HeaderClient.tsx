@@ -1,27 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-<<<<<<< HEAD
-import { useRouter, usePathname } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
-import { ShoppingBagIcon } from '@heroicons/react/24/outline';
-import { MagnifyingGlassIcon, ChevronDownIcon } from '@heroicons/react/24/solid';
-import Container from './Container';
-import CartDrawer from './CartDrawer';
-import { useCartStore, selectCartCount } from '@/store/cart';
-import { NAVIGATION, type NavItem } from '@/lib/navigation';
-import { cn } from '@/lib/utils';
-
-interface HeaderProps {
-  navItems?: NavItem[];
-}
-
-export default function Header({ navItems = [] }: HeaderProps) {
-  const router = useRouter();
-  const pathname = usePathname();
-  const [search, setSearch] = useState('');
-  const [openNav, setOpenNav] = useState<string | null>(null);
-=======
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import { ShoppingBagIcon } from '@heroicons/react/24/outline';
@@ -41,34 +20,21 @@ export default function Header() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [search, setSearch] = useState(searchParams?.get('q') ?? '');
->>>>>>> origin/main
   const count = useCartStore(selectCartCount);
   const openCart = useCartStore((state) => state.openCart);
   const isOpen = useCartStore((state) => state.isOpen);
   const closeCart = useCartStore((state) => state.closeCart);
 
   useEffect(() => {
-<<<<<<< HEAD
-=======
     setSearch(searchParams?.get('q') ?? '');
   }, [searchParams]);
 
   useEffect(() => {
->>>>>>> origin/main
     closeCart();
   }, [pathname, closeCart]);
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-<<<<<<< HEAD
-    const params = new URLSearchParams();
-    const trimmed = search.trim();
-    if (trimmed) {
-      params.set('q', trimmed);
-    }
-    const queryString = params.toString();
-    router.push(`/search${queryString ? `?${queryString}` : ''}`);
-=======
     const params = new URLSearchParams(searchParams?.toString() ?? '');
     if (search) {
       params.set('q', search);
@@ -76,7 +42,6 @@ export default function Header() {
       params.delete('q');
     }
     router.push(`/catalog?${params.toString()}`);
->>>>>>> origin/main
   };
 
   const activeLink = useMemo(() => pathname?.split('?')[0], [pathname]);
@@ -88,63 +53,6 @@ export default function Header() {
           Heritage Atelier
         </Link>
         <nav className="hidden items-center gap-6 text-sm font-medium text-charcoal/70 md:flex">
-<<<<<<< HEAD
-          {(navItems.length ? navItems : NAVIGATION).map((item) => {
-            const isActive = activeLink?.startsWith(item.href);
-            const hasMenu = Boolean(item.groups && item.groups.length);
-            return (
-              <div
-                key={item.title}
-                className="relative"
-                onMouseEnter={() => hasMenu && setOpenNav(item.title)}
-                onMouseLeave={() => setOpenNav((current) => (current === item.title ? null : current))}
-              >
-                <Link
-                  href={item.href}
-                  prefetch
-                  className={cn(
-                    'inline-flex items-center gap-1 transition-colors duration-200',
-                    isActive ? 'text-charcoal' : 'hover:text-gold'
-                  )}
-                  onFocus={() => hasMenu && setOpenNav(item.title)}
-                >
-                  {item.title}
-                  {hasMenu && <ChevronDownIcon className="h-3 w-3" aria-hidden />}
-                </Link>
-                {hasMenu && openNav === item.title && (
-                  <div className="absolute left-1/2 top-full z-40 mt-4 w-[32rem] -translate-x-1/2 rounded-3xl border border-charcoal/10 bg-white/95 p-6 shadow-soft">
-                    <div className="grid gap-6 md:grid-cols-2">
-                      {item.groups?.map((group) => (
-                        <div key={group.title} className="space-y-3">
-                          <Link
-                            href={group.href}
-                            className="font-display text-lg text-charcoal hover:text-gold"
-                            prefetch
-                          >
-                            {group.title}
-                          </Link>
-                          <ul className="space-y-2 text-sm text-charcoal/70">
-                            {group.children?.map((child) => (
-                              <li key={child.href}>
-                                <Link
-                                  href={child.href}
-                                  className="transition-colors hover:text-gold"
-                                  prefetch
-                                >
-                                  {child.title}
-                                </Link>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            );
-          })}
-=======
           {links.map((link) => (
             <Link
               key={link.href}
@@ -158,7 +66,6 @@ export default function Header() {
               {link.label}
             </Link>
           ))}
->>>>>>> origin/main
         </nav>
         <div className="flex flex-1 items-center justify-end gap-4">
           <form

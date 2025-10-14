@@ -26,5 +26,10 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: '/icon.svg'
+<<<<<<< HEAD
   }
+=======
+  },
+  themeColor: '#ffffff'
+>>>>>>> origin/main
 };

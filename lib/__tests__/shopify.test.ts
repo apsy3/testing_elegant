@@ -1,15 +1,21 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 vi.mock('react', () => ({
   cache: <T>(fn: T) => fn
 }));
 =======
+=======
+>>>>>>> origin/main
 declare global {
   // eslint-disable-next-line no-var
   var fetch: typeof fetch;
 }
+<<<<<<< HEAD
 >>>>>>> ea3c549 (refactor: simplify catalog definitions)
+=======
+>>>>>>> origin/main
 
 describe('shopifyFetch', () => {
   beforeEach(() => {

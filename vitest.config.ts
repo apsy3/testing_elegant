@@ -5,10 +5,13 @@ export default defineConfig({
     environment: 'node',
     globals: true,
 <<<<<<< HEAD
+<<<<<<< HEAD
     include: ['lib/__tests__/**/*.test.ts'],
     exclude: ['e2e/**/*'],
 =======
 >>>>>>> ea3c549 (refactor: simplify catalog definitions)
+=======
+>>>>>>> origin/main
     setupFiles: [],
     coverage: {
       reporter: ['text', 'lcov'],

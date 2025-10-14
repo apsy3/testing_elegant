@@ -1,9 +1,14 @@
+<<<<<<< HEAD
 import { Suspense } from 'react';
 import Container from '@/components/Container';
 import CartPageClient from '@/components/CartPageClient';
 import Skeleton from '@/components/Skeleton';
 
 export const dynamic = 'force-dynamic';
+=======
+import Container from '@/components/Container';
+import CartPageClient from '@/components/CartPageClient';
+>>>>>>> origin/main
 
 export default function CartPage() {
   return (
@@ -13,13 +18,18 @@ export default function CartPage() {
           <p className="text-xs uppercase tracking-[0.4em] text-charcoal/60">Your Selection</p>
           <h1 className="mt-4 font-display text-4xl text-charcoal">Cart</h1>
         </div>
+<<<<<<< HEAD
         <Suspense fallback={<CartFallback />}> 
           <CartPageClient />
         </Suspense>
+=======
+        <CartPageClient />
+>>>>>>> origin/main
       </Container>
     </div>
   );
 }
+<<<<<<< HEAD
 
 function CartFallback() {
   return (
@@ -29,3 +39,5 @@ function CartFallback() {
     </div>
   );
 }
+=======
+>>>>>>> origin/main

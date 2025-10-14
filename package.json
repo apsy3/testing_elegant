@@ -2,11 +2,14 @@
   "name": "luxury-headless-storefront",
   "version": "1.0.0",
   "private": true,
+<<<<<<< HEAD
   "packageManager": "pnpm@9.1.0",
   "engines": {
     "node": "^18.18.0 || ^20.0.0",
     "pnpm": "^9.0.0"
   },
+=======
+>>>>>>> origin/main
   "scripts": {
     "dev": "next dev",
     "build": "next build",

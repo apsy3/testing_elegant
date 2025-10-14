@@ -1,5 +1,8 @@
 import Image from 'next/image';
+<<<<<<< HEAD
 import Link from 'next/link';
+=======
+>>>>>>> origin/main
 import { notFound } from 'next/navigation';
 import Container from '@/components/Container';
 import ProductGrid from '@/components/ProductGrid';
@@ -8,6 +11,7 @@ import Price from '@/components/Price';
 import { getProductByHandle, listProducts } from '@/lib/shopify';
 import type { Metadata } from 'next';
 import { SITE_CONFIG } from '@/lib/config';
+<<<<<<< HEAD
 import {
   breadcrumbsForSlug,
   listCatalogDefinitions,
@@ -16,6 +20,10 @@ import {
 } from '@/lib/catalog';
 
 export const dynamic = 'force-dynamic';
+=======
+
+export const revalidate = 60;
+>>>>>>> origin/main
 
 type ProductPageProps = {
   params: {
@@ -51,6 +59,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   }
 
   const allProducts = await listProducts();
+<<<<<<< HEAD
   const normalized = normalizeProducts(allProducts);
   const normalizedProduct = normalized.find((p) => p.handle === product.handle);
 
@@ -68,6 +77,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
         .filter((candidate) => candidate.handle !== product.handle && primaryDefinition.rule(candidate))
         .slice(0, 4)
     : normalized.filter((candidate) => candidate.handle !== product.handle).slice(0, 4);
+=======
+  const related = allProducts
+    .filter((p) => p.handle !== product.handle)
+    .filter((p) => product.tags.some((tag) => p.tags.includes(tag)))
+    .slice(0, 4);
+>>>>>>> origin/main
 
   const descriptionParagraphs = product.description.split(/\n{2,}/).filter(Boolean);
   const materialsLine = product.description
@@ -77,6 +92,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   return (
     <div className="pb-24">
+<<<<<<< HEAD
       <Container className="space-y-10 py-12">
         <nav aria-label="Breadcrumb" className="text-xs uppercase tracking-[0.3em] text-charcoal/50">
           <ol className="flex flex-wrap gap-2">
@@ -104,6 +120,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
           <div className="grid gap-4">
             <div className="relative aspect-[3/4] overflow-hidden rounded-[3rem] bg-fog">
               {product.featuredImage ? (
+=======
+      <Container className="grid gap-12 py-12 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]">
+        <div className="grid gap-4">
+          <div className="relative aspect-[3/4] overflow-hidden rounded-[3rem] bg-fog">
+            {product.featuredImage ? (
+>>>>>>> origin/main
               <Image
                 src={product.featuredImage}
                 alt={product.title}
@@ -125,9 +147,15 @@ export default async function ProductPage({ params }: ProductPageProps) {
               </div>
             ))}
           </div>
+<<<<<<< HEAD
           </div>
           <div className="space-y-8">
             <div className="space-y-3">
+=======
+        </div>
+        <div className="space-y-8">
+          <div className="space-y-3">
+>>>>>>> origin/main
             <p className="text-xs uppercase tracking-[0.4em] text-charcoal/50">{SITE_CONFIG.name}</p>
             <h1 className="font-display text-4xl text-charcoal">{product.title}</h1>
             <Price amount={product.priceRange.min} currencyCode={product.priceRange.currencyCode} />
@@ -149,7 +177,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
           )}
           <AddToCartButton product={product} />
         </div>
+<<<<<<< HEAD
         </div>
+=======
+>>>>>>> origin/main
       </Container>
 
       {related.length > 0 && (

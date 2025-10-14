@@ -1,17 +1,19 @@
-# Luxury–Heritage Marketplace Preview
+# Heritage Atelier Preview Storefront
 
-This repository hosts a lightweight preview of the headless Shopify concept site. All data is mock-only and the checkout flow returns a local fallback URL so nothing touches live merchant infrastructure.
+This repository contains a Next.js 14 headless storefront that consumes the Shopify Storefront API with a mock fallback so the site runs without credentials.
 
-## Tooling prerequisites
+## Getting started
 
-- Node.js 18.18.x LTS (see `.nvmrc`)
-- pnpm 9.x (Corepack recommended) or `npm` with the scripts below
+```bash
+pnpm install
+cp .env.example .env.local
+pnpm dev
+```
 
-## Useful scripts
+## Testing
 
-- `pnpm dev` – run the Next.js development server
-- `pnpm build` – create a production build for static preview
-- `pnpm lint` – run ESLint with the Next.js config
-- `pnpm typecheck` – run TypeScript in no-emit mode
-
-Automated tests are disabled in preview mode to keep dependencies minimal.
+```bash
+pnpm lint
+pnpm typecheck
+pnpm test
+```

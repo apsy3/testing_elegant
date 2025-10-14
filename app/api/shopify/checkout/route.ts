@@ -1,45 +1,29 @@
 import { NextResponse } from 'next/server';
+import { z } from 'zod';
 import { createCheckout } from '@/lib/shopify';
 
-type CheckoutLine = {
-  merchandiseId: string;
-  quantity: number;
-};
-
-function sanitizeLines(value: unknown): CheckoutLine[] | null {
-  if (!Array.isArray(value) || value.length === 0) {
-    return null;
-  }
-
-  const lines: CheckoutLine[] = [];
-  for (const entry of value) {
-    if (typeof entry !== 'object' || entry === null) {
-      return null;
-    }
-    const { merchandiseId, quantity } = entry as { merchandiseId?: unknown; quantity?: unknown };
-    if (typeof merchandiseId !== 'string' || merchandiseId.trim() === '') {
-      return null;
-    }
-    const qty = typeof quantity === 'number' && Number.isInteger(quantity) ? quantity : 1;
-    if (qty <= 0) {
-      return null;
-    }
-    lines.push({ merchandiseId, quantity: qty });
-  }
-
-  return lines;
-}
+const CheckoutSchema = z.object({
+  lines: z
+    .array(
+      z.object({
+        merchandiseId: z.string().min(1),
+        quantity: z.number().int().min(1).default(1)
+      })
+    )
+    .min(1)
+});
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
-    const lines = sanitizeLines(body?.lines);
+    const json = await request.json();
+    const parsed = CheckoutSchema.safeParse(json);
 
-    if (!lines) {
+    if (!parsed.success) {
       return NextResponse.json({ error: 'Invalid cart payload' }, { status: 400 });
     }
 
-    const checkout = await createCheckout(lines);
+    const checkout = await createCheckout(parsed.data.lines);
+
     return NextResponse.json(checkout);
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Unexpected error';

@@ -1,3 +1,8 @@
+const DEFAULT_HERO_IMAGE =
+  'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=1600&q=80';
+
+export const HERO_IMAGE_URL = process.env.NEXT_PUBLIC_HERO_IMAGE_URL ?? DEFAULT_HERO_IMAGE;
+
 export const SITE_CONFIG = {
   name: 'Heritage Atelier',
   description:
@@ -8,9 +13,3 @@ export const SITE_CONFIG = {
 };
 
 export const MOCK_CHECKOUT_URL = '/cart?mode=mock';
-
-const DEFAULT_HERO_IMAGE =
-  'https://images-cdn.openai.com/luxury-heritage/model-handcrafted-attire.jpg';
-
-export const HERO_IMAGE_URL =
-  process.env.NEXT_PUBLIC_HERO_IMAGE_URL?.trim() || DEFAULT_HERO_IMAGE;

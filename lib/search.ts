@@ -14,17 +14,15 @@ export interface BasicItem {
   tags?: string[];
 }
 
+export type CatalogSort = 'newest' | 'price-asc' | 'price-desc';
+
 export function parseQuery(searchParams: URLSearchParams): string {
   return (searchParams.get('q') || '').trim();
 }
 
 export function parseSort(searchParams: URLSearchParams): SortSpec {
   const raw = (searchParams.get('sort') || 'relevance').toLowerCase();
-  const key: SortKey = raw.startsWith('price')
-    ? 'price'
-    : raw.startsWith('new')
-      ? 'new'
-      : 'relevance';
+  const key: SortKey = raw.startsWith('price') ? 'price' : raw.startsWith('new') ? 'new' : 'relevance';
   const dir: SortDir = raw.endsWith('_desc') ? 'desc' : 'asc';
   return { key, dir };
 }
@@ -33,19 +31,17 @@ export function parseFiltersFromSearchParams(
   searchParams: URLSearchParams,
   allowedKeys?: string[]
 ): Filters {
+  const allow = allowedKeys ? new Set(allowedKeys) : null;
   const out: Filters = {};
-  const allowSet = allowedKeys ? new Set(allowedKeys) : undefined;
   for (const [k, v] of searchParams.entries()) {
     if (!k.startsWith('f.')) continue;
     const key = k.slice(2);
-    if (allowSet && !allowSet.has(key)) continue;
+    if (allow && !allow.has(key)) continue;
     const values = v
       .split(',')
       .map((s) => s.trim())
       .filter(Boolean);
-    if (values.length) {
-      out[key] = values;
-    }
+    if (values.length) out[key] = values;
   }
   return out;
 }
@@ -60,9 +56,7 @@ export function applyFilters<T extends BasicItem>(
 
   const filtered = items.filter((item) => {
     const hay = `${item.title || ''}`.toLowerCase();
-    if (q && !hay.includes(q)) {
-      return false;
-    }
+    if (q && !hay.includes(q)) return false;
 
     for (const [fk, fvals] of Object.entries(filters)) {
       if (!fvals.length) continue;
@@ -74,11 +68,8 @@ export function applyFilters<T extends BasicItem>(
           return tt === expect || tt === val.toLowerCase();
         });
       });
-      if (!ok) {
-        return false;
-      }
+      if (!ok) return false;
     }
-
     return true;
   });
 
@@ -117,4 +108,30 @@ export function buildFilterGroups<T extends { tags?: string[] }>(
       .map(([value, count]) => ({ value, count }))
       .sort((a, b) => a.value.localeCompare(b.value))
   }));
+}
+
+export function searchProducts<T extends BasicItem & { tags: string[]; priceRange?: { min: number }; updatedAt?: string }>(
+  products: T[],
+  options: { query?: string; tag?: string; sort?: CatalogSort }
+): T[] {
+  const { query, tag, sort = 'newest' } = options;
+
+  const filtered = products.filter((product) => {
+    const haystack = `${product.title ?? ''} ${(product as any).description ?? ''}`.toLowerCase();
+    const matchesQuery = query ? haystack.includes(query.toLowerCase()) : true;
+    const matchesTag = tag ? product.tags.includes(tag) : true;
+    return matchesQuery && matchesTag;
+  });
+
+  return filtered.sort((a, b) => {
+    if (sort === 'price-asc' || sort === 'price-desc') {
+      const priceA = (a as any).price ?? a.priceRange?.min ?? 0;
+      const priceB = (b as any).price ?? b.priceRange?.min ?? 0;
+      return sort === 'price-asc' ? priceA - priceB : priceB - priceA;
+    }
+    // newest
+    const dateA = new Date((a as any).updatedAt ?? a.createdAt ?? 0).getTime();
+    const dateB = new Date((b as any).updatedAt ?? b.createdAt ?? 0).getTime();
+    return dateB - dateA;
+  });
 }

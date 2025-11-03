@@ -1,4 +1,4 @@
 {
-  "buildCommand": "pnpm run build",
-  "installCommand": "corepack use pnpm@10.3.0 && pnpm install --frozen-lockfile=false"
+  "buildCommand": "corepack pnpm run build",
+  "installCommand": "corepack use pnpm@10.3.0 && corepack pnpm install --frozen-lockfile=false"
 }

@@ -1,9 +1,5 @@
 import type { Filters } from './search';
-<<<<<<< HEAD
-import type { NormalizedProduct, FilterKey } from './catalog';
-=======
 import type { NormalizedProduct, FilterKey } from './taxonomy';
->>>>>>> 1b3fbaf (fix: align search utilities with shared exports)
 import { buildFilterGroups } from './search';
 import type { FilterGroup } from '@/components/CatalogFilters';
 

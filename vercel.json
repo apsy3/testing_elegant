@@ -4,4 +4,3 @@
   "installCommand": "pnpm install --frozen-lockfile=false"
   "installCommand": "corepack enable && corepack prepare pnpm@10.3.0 --activate && pnpm install --frozen-lockfile=false"
 }
-}
